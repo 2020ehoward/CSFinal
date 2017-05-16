@@ -20,7 +20,7 @@ public class MainPanel extends JPanel
    {
       setLayout(new BorderLayout());
    
-      scoreboard = new Scoreboard();
+      scoreboard = new Scoreboard(this);
       add(scoreboard,BorderLayout.SOUTH);
    
       gameboard = new Gameboard();
@@ -29,14 +29,22 @@ public class MainPanel extends JPanel
       towerboard = new Towerboard();
       add(towerboard,BorderLayout.EAST);
       
-      t = new javax.swing.Timer(scoreboard.getSpeed(), new Listener());
-      t.start();
+      t = new javax.swing.Timer(0, new Listener());
    }
    private class Listener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
       {
+          System.out.println(t.getDelay());
       }
+   }
+   public void setSpeed(int x) {
+       if(x!=0) {
+           t.start();
+           t.setDelay(x);
+       }
+       else
+           t.stop();
    }
    
 }
