@@ -3,7 +3,6 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 
 public class Scoreboard extends JPanel
 {   
@@ -21,25 +20,32 @@ public class Scoreboard extends JPanel
        speed = 0;
 
        setLayout(new BorderLayout());
+
        JPanel speedPanel = new JPanel();
        speedPanel.setBackground(BACKGROUND);
+
        pause = new JToggleButton(new ImageIcon("Textures/Buttons/Speed0.png"),true);
        pause.addActionListener(new speedListener(0));
        speedPanel.add(pause);
+
        speed1 = new JToggleButton(new ImageIcon("Textures/Buttons/Speed1.png"));
        speed1.addActionListener(new speedListener(1));
        speedPanel.add(speed1);
+
        speed2 = new JToggleButton(new ImageIcon("Textures/Buttons/Speed2.png"));
        speed2.addActionListener(new speedListener(2));
        speedPanel.add(speed2);
+
        speed3 = new JToggleButton(new ImageIcon("Textures/Buttons/Speed3.png"));
        speed3.addActionListener(new speedListener(3));
        speedPanel.add(speed3);
 
        add(speedPanel,BorderLayout.WEST);
 
-        lifeLabel = new JLabel("Life Remaining: "+life);
+        lifeLabel = new JLabel("          Life Remaining: "+life);
+        lifeLabel.setFont(new Font("Arial",Font.PLAIN,18));
         roundLabel = new JLabel("Round: "+round+"    ");
+       roundLabel.setFont(new Font("Arial",Font.PLAIN,18));
 
         add(lifeLabel,BorderLayout.CENTER);
         add(roundLabel,BorderLayout.EAST);
@@ -92,8 +98,8 @@ public class Scoreboard extends JPanel
         }
     }
     public void update() {
-        lifeLabel.setText("Life Remaining: "+life);
-        roundLabel.setText("Round: "+round+"\t");
+        lifeLabel.setText("          Life Remaining: "+life);
+        roundLabel.setText("Round: "+round+"    ");
    }
    
 }

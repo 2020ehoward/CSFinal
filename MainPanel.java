@@ -8,14 +8,12 @@ import java.util.*;
 
 public class MainPanel extends JPanel
 {
-   private static final int FRAME = 800;   
-   //private static final Color BACKGROUND = new Color(212, 196, 255);
-   //private static final Color FRONTGROUND = new Color(89, 84, 102);
    
    private Scoreboard scoreboard;
    private Gameboard gameboard;
    private Towerboard towerboard;
-   javax.swing.Timer t;
+   private javax.swing.Timer t;
+
    public MainPanel()
    {
       setLayout(new BorderLayout());
@@ -35,7 +33,7 @@ public class MainPanel extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {
-          System.out.println(t.getDelay());
+          scoreboard.update();
       }
    }
    public void setSpeed(int x) {
