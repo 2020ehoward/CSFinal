@@ -5,8 +5,8 @@ import java.awt.*;
 
  public class Gameboard extends JPanel
 {
-    private final int WIDTH = 13;
-    private int[][] map = {
+    private static final int WIDTH = 13;
+    private static final int[][] map = {
             {1,1,1,1,1,1,1,3,1,1,1,1,1,},
             {1,1,0,0,0,0,0,0,1,1,1,4,1,},
             {1,1,0,1,1,1,1,1,1,4,4,4,1,},
@@ -22,13 +22,14 @@ import java.awt.*;
             {1,1,1,1,1,1,1,1,1,1,1,1,1,}
     };
     private JButton[][] board;
+    private ImageIcon water,grass,dirt;
    public Gameboard()
    {
         board = new JButton[WIDTH][WIDTH];
 
-        ImageIcon water = new ImageIcon("Textures/water.jpg");
-       ImageIcon grass = new ImageIcon("Textures/Grass.jpg");
-       ImageIcon dirt = new ImageIcon("Textures/Dirt.jpg");
+       water = new ImageIcon("Textures/water.jpg");
+       grass = new ImageIcon("Textures/Grass.jpg");
+       dirt = new ImageIcon("Textures/Dirt.jpg");
 
        Border emptyBorder = BorderFactory.createEmptyBorder();
 

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class Scoreboard extends JPanel
 {   
-   private static final Color BACKGROUND = new Color(255, 227, 191);
+   public static final Color BACKGROUND = new Color(255, 227, 191);
 
    private int life,round,speed;
    private JLabel lifeLabel,roundLabel;
