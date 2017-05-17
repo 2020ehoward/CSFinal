@@ -42,10 +42,10 @@ public class Scoreboard extends JPanel
 
        add(speedPanel,BorderLayout.WEST);
 
-        lifeLabel = new JLabel("          Life Remaining: "+life);
-        lifeLabel.setFont(new Font("Arial",Font.PLAIN,18));
+        lifeLabel = new JLabel("        Life Remaining: "+life);
+        lifeLabel.setFont(new Font("Monospaced",Font.BOLD,16));
         roundLabel = new JLabel("Round: "+round+"    ");
-       roundLabel.setFont(new Font("Arial",Font.PLAIN,18));
+       roundLabel.setFont(new Font("Monospaced",Font.BOLD,16));
 
         add(lifeLabel,BorderLayout.CENTER);
         add(roundLabel,BorderLayout.EAST);
@@ -95,10 +95,30 @@ public class Scoreboard extends JPanel
                     speed3.doClick();
                 mPanel.setSpeed(speed);
             }
+            else {
+                switch(mySpeed) {
+                    case 0:
+                        if(speed==0)
+                            temp.doClick();
+                        break;
+                    case 1:
+                        if(speed == 50)
+                            temp.doClick();
+                        break;
+                    case 2:
+                        if(speed == 10)
+                            temp.doClick();
+                        break;
+                    case 3:
+                        if(speed == 2)
+                            temp.doClick();
+                        break;
+                }
+            }
         }
     }
     public void update() {
-        lifeLabel.setText("          Life Remaining: "+life);
+        lifeLabel.setText("        Life Remaining: "+life);
         roundLabel.setText("Round: "+round+"    ");
    }
    
