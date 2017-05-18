@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="20281e60-e330-46d2-8ae9-235ebad2b7e0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Towerboard.java" afterPath="$PROJECT_DIR$/Towerboard.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -599,7 +598,7 @@
       <workItem from="1494954178083" duration="16567000" />
       <workItem from="1495038892689" duration="95000" />
       <workItem from="1495048573806" duration="603000" />
-      <workItem from="1495125941640" duration="5351000" />
+      <workItem from="1495125941640" duration="5363000" />
     </task>
     <task id="LOCAL-00001" summary="Added basic 2d button array plus textures">
       <created>1494956827673</created>
@@ -664,11 +663,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495129027417</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Changed game panel to a graphics object instead of swing components">
+      <created>1495131304397</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1495131304397</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22616000" />
+    <option name="totallyTimeSpent" value="22628000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1055" extended-state="0" />
