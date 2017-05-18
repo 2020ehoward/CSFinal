@@ -33,6 +33,8 @@ public class MainPanel extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {
+          gameboard.update();
+          towerboard.update();
           scoreboard.update();
       }
    }
