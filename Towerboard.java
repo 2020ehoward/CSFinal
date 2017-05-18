@@ -1,7 +1,6 @@
 //Evan Howard, 11 May 2017
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 
 public class Towerboard extends JPanel
 {
@@ -12,11 +11,16 @@ public class Towerboard extends JPanel
    {
        coin = 0;
       setLayout(new BorderLayout());
+      setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
 
       coinLabel = new JLabel("Coins: "+coin);
        coinLabel.setFont(new Font("Monospaced",Font.BOLD,24));
        add(coinLabel,BorderLayout.NORTH);
       towers = new JButton[2][3];
+
+      JPanel sCancel = new JPanel();
+      sCancel.setBackground(Scoreboard.BACKGROUND);
+      sCancel.setLayout(new GridLayout(2,1,0,10));
 
       JPanel shop = new JPanel();
       shop.setBackground(Scoreboard.BACKGROUND);
@@ -29,7 +33,12 @@ public class Towerboard extends JPanel
          shop.add(towers[x][y]);
          }
 
-         add(shop,BorderLayout.SOUTH);
+         JButton cancel = new JButton("Cancel");
+         cancel.setFont(new Font("Monospaced",Font.BOLD, 24));
+
+         sCancel.add(shop);
+       sCancel.add(cancel);
+         add(sCancel,BorderLayout.SOUTH);
 
       setBackground(Scoreboard.BACKGROUND);
    }
