@@ -1,8 +1,8 @@
 //Evan Howard, 11 May 2017
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.*;
+import java.util.LinkedList;
 
 public class Gameboard extends JPanel
 {
@@ -25,13 +25,11 @@ public class Gameboard extends JPanel
     };
     private BufferedImage myImage = new BufferedImage(IMAGEWIDTH, IMAGEWIDTH, 1);
     private Graphics myBuffer;
-    private ImageIcon[][] board;
     private ImageIcon water,grass,dirt;
+    private LinkedList<Enemy> enemies;
    public Gameboard()
    {
        myBuffer = myImage.getGraphics();
-
-        board = new ImageIcon[WIDTH][WIDTH];
 
        water = new ImageIcon("Textures/water.jpg");
        grass = new ImageIcon("Textures/Grass.jpg");
@@ -52,15 +50,14 @@ public class Gameboard extends JPanel
        for(int x=0;x<WIDTH;x++)
            for(int y=0;y<WIDTH;y++) {
                if(map[x][y]==1) {
-                   board[x][y] = new ImageIcon(grass.getImage());
+                   myBuffer.drawImage(grass.getImage(),(IMAGEWIDTH/WIDTH)*y,(IMAGEWIDTH/WIDTH)*x,(ImageObserver)null);
                }
                else if(map[x][y]==4) {
-                   board[x][y] = new ImageIcon(water.getImage());
+                   myBuffer.drawImage(water.getImage(),(IMAGEWIDTH/WIDTH)*y,(IMAGEWIDTH/WIDTH)*x,(ImageObserver)null);
                }
                    else if(map[x][y]==0 || map[x][y]==2 || map[x][y]==3){
-                   board[x][y] = new ImageIcon(dirt.getImage());
+                   myBuffer.drawImage(dirt.getImage(),(IMAGEWIDTH/WIDTH)*y,(IMAGEWIDTH/WIDTH)*x,(ImageObserver)null);
                }
-               myBuffer.drawImage(board[x][y].getImage(),(IMAGEWIDTH/WIDTH)*y,(IMAGEWIDTH/WIDTH)*x,(ImageObserver)null);
        }
    }
     public void paint(Graphics g) {
