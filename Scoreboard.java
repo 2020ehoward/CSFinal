@@ -16,7 +16,7 @@ public class Scoreboard extends JPanel
    {
        this.mPanel = mPanel;
        life = 100;
-       round = 0;
+       round = 1;
        speed = 0;
 
        setLayout(new BorderLayout());
@@ -53,16 +53,32 @@ public class Scoreboard extends JPanel
       setBackground(BACKGROUND);
    }
 
-    public void setLife(int life) {
-        this.life = life;
+    public void loseLife() {
+        this.life-=5;
     }
 
-    public void setRound(int round) {
-        this.round = round;
+    public int getLife() {
+        return life;
+    }
+
+    public void nextRound() {
+        this.round++;
+    }
+
+    public int getRound() {
+        return round;
     }
 
     public void pause() {
        pause.doClick();
+    }
+
+    public void endGame() {
+       pause();
+       pause.setEnabled(false);
+       speed1.setEnabled(false);
+        speed2.setEnabled(false);
+        speed3.setEnabled(false);
     }
 
     private class speedListener implements ActionListener {

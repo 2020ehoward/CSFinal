@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class Gameboard extends JPanel
 {
     private static final int WIDTH = 13;
-    private static final int IMAGEWIDTH = 780;
+    public static final int IMAGEWIDTH = 780;
     public static final int SQUARESIZE = IMAGEWIDTH/WIDTH;
     public static final int[][] map = {
             {1,1,1,1,1,1,1,3,1,1,1,1,1,},
@@ -27,7 +27,6 @@ public class Gameboard extends JPanel
     };
 
     private boolean isRound;
-    private int round;
 
     private Scoreboard scoreboard;
     private BufferedImage myImage = new BufferedImage(IMAGEWIDTH, IMAGEWIDTH, 1);
@@ -38,8 +37,7 @@ public class Gameboard extends JPanel
    public Gameboard(Scoreboard scoreboard)
    {
        this.scoreboard = scoreboard;
-       isRound=false;
-       round=0;
+       isRound=true;
        towers = new LinkedList<>();
        enemies = new LinkedList<>();
 
@@ -79,12 +77,9 @@ public class Gameboard extends JPanel
                 }
             }
     }
-    public int getRound() {
-        return round;
-    }
 
     public void nextRound() {
-
+        add(new Enemy(0,(SQUARESIZE*getEntrance())+(int)(Math.random()*30),Enemy.EAST,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
     }
 
     public void add(Enemy e) {
@@ -92,30 +87,41 @@ public class Gameboard extends JPanel
     }
 
     public void update() {
-        drawMap();
 
-       for(Enemy e : enemies) {
-           if (e.isDead())
-               enemies.remove(e);
-       }
+       drawMap();
 
-       if(enemies.size()==0 && isRound) {
-           isRound = false;
-           scoreboard.pause();
-       }
+       for (Enemy e : enemies) {
+            if (e.isDead())
+                enemies.remove(e);
+            else if (e.isEscaped()) {
+                enemies.remove(e);
+                scoreboard.loseLife();
+            }
+        }
 
-       if(!isRound)
-           isRound=true;
+        if (!isRound) {
+            nextRound();
+            scoreboard.nextRound();
+            isRound = true;
+        }
 
-       for(Enemy e : enemies) {
-           e.draw(myBuffer);
-           e.tick();
-       }
-       for(Tower t : towers)
-           t.draw(myBuffer);
+        if (enemies.size() == 0 && isRound) {
+            isRound = false;
+            scoreboard.pause();
+        }
 
+        for (Enemy e : enemies) {
+            e.draw(myBuffer);
+            e.tick();
+        }
+        for (Tower t : towers)
+            t.draw(myBuffer);
 
-       repaint();
-   }
+         repaint();
+
+         if(scoreboard.getLife()==0)
+             scoreboard.endGame();
+
+    }
    
 }

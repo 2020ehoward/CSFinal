@@ -11,7 +11,7 @@ public class Enemy {
     public static final int SOUTH = 2;
     public static final int WEST = 3;
 
-    private boolean isDead;
+    private boolean isDead,isEscaped,isEscaping;
 private int x,y,direction,health,speed;
 private ImageIcon texture;
 
@@ -29,6 +29,13 @@ private ImageIcon texture;
         if(health==0)
             isDead = true;
 
+        if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE]==3)
+            isEscaping=true;
+
+        if(x<0-texture.getIconWidth() || x>Gameboard.IMAGEWIDTH+texture.getIconWidth() || y<0-texture.getIconHeight() || y>Gameboard.IMAGEWIDTH+texture.getIconHeight())
+            isEscaped = true;
+
+        if(!isEscaping)
         switch(direction) {
             case 0:
                 if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE-1][x/Gameboard.SQUARESIZE]==1)
@@ -63,6 +70,21 @@ private ImageIcon texture;
                 x -= speed;
                 break;
         }
+        else
+            switch(direction) {
+                case 0:
+                    y-=speed;
+                    break;
+                case 1:
+                    x+=speed;
+                    break;
+                case 2:
+                    y+=speed;
+                    break;
+                case 3:
+                    x-=speed;
+                    break;
+            }
     }
 
     public void setHealth(int health) {
@@ -71,6 +93,10 @@ private ImageIcon texture;
 
     public boolean isDead() {
         return isDead;
+    }
+
+    public boolean isEscaped() {
+        return isEscaped;
     }
 
     public void draw(Graphics g) {
