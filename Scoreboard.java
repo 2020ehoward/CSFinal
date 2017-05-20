@@ -61,6 +61,10 @@ public class Scoreboard extends JPanel
         this.round = round;
     }
 
+    public void pause() {
+       pause.doClick();
+    }
+
     private class speedListener implements ActionListener {
 
        int mySpeed;
