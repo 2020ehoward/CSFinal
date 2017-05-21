@@ -42,8 +42,8 @@ public class Towerboard extends JPanel
 
       setBackground(Scoreboard.BACKGROUND);
    }
-   public void setCoins(int coin) {
-       this.coin = coin;
+   public void addCoins(int coin) {
+       this.coin+=coin;
    }
    public void update() {
        coinLabel.setText("Coins: "+coin);

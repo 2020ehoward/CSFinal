@@ -21,11 +21,11 @@ public class MainPanel extends JPanel
       scoreboard = new Scoreboard(this);
       add(scoreboard,BorderLayout.SOUTH);
    
-      gameboard = new Gameboard(scoreboard);
-      add(gameboard,BorderLayout.CENTER);
-   
       towerboard = new Towerboard();
       add(towerboard,BorderLayout.EAST);
+
+       gameboard = new Gameboard(scoreboard,towerboard);
+       add(gameboard,BorderLayout.CENTER);
       
       t = new javax.swing.Timer(0, new Listener());
    }

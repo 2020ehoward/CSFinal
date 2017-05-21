@@ -27,17 +27,21 @@ public class Gameboard extends JPanel
     };
 
     private boolean isRound;
+    private int bEnemyCounter;
 
+    private Towerboard towerboard;
     private Scoreboard scoreboard;
     private BufferedImage myImage = new BufferedImage(IMAGEWIDTH, IMAGEWIDTH, 1);
     private Graphics myBuffer;
     private ImageIcon water,grass,dirt;
     private LinkedList<Enemy> enemies;
     private LinkedList<Tower> towers;
-   public Gameboard(Scoreboard scoreboard)
+   public Gameboard(Scoreboard scoreboard,Towerboard towerboard)
    {
+       this.towerboard = towerboard;
        this.scoreboard = scoreboard;
-       isRound=true;
+       isRound=false;
+       bEnemyCounter=0;
        towers = new LinkedList<>();
        enemies = new LinkedList<>();
 
@@ -47,9 +51,9 @@ public class Gameboard extends JPanel
        grass = new ImageIcon(new ImageIcon("Textures/Grass.jpg").getImage().getScaledInstance(Gameboard.SQUARESIZE,Gameboard.SQUARESIZE,java.awt.Image.SCALE_SMOOTH));
        dirt = new ImageIcon(new ImageIcon("Textures/Dirt.jpg").getImage().getScaledInstance(Gameboard.SQUARESIZE,Gameboard.SQUARESIZE,java.awt.Image.SCALE_SMOOTH));
 
-       drawMap();
+       spawnBasicTower(6,6);
 
-       add(new Enemy(this,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
+       drawMap();
    }
     public void paintComponent(Graphics g) {
         g.drawImage(this.myImage, 0, 0, this.getWidth(), this.getHeight(), null);
@@ -79,30 +83,43 @@ public class Gameboard extends JPanel
     }
 
     public void nextRound() {
-        add(new Enemy(this,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
+        bEnemyCounter=scoreboard.getRound()*20;
     }
 
-    public void add(Enemy e) {
-       enemies.add(e);
+    public void spawnBasicEnemy() {
+       enemies.add(new Enemy(this,1,5,new ImageIcon("Textures/Enemies/enemy1.png")));
+    }
+
+    public  void spawnBasicTower(int x,int y) {
+        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/basicBullet.jpg"),1,10),new ImageIcon("Textures/Towers/basicTower.png"),x,y,50,3*SQUARESIZE));
+    }
+
+    public LinkedList<Enemy> getEnemies() {
+        return enemies;
     }
 
     public void update() {
 
        drawMap();
 
-       for (Enemy e : enemies) {
-            if (e.isDead())
-                enemies.remove(e);
-            else if (e.isEscaped()) {
-                enemies.remove(e);
-                scoreboard.loseLife();
-            }
-        }
-
         if (!isRound) {
             nextRound();
             scoreboard.nextRound();
             isRound = true;
+        }
+
+       if(bEnemyCounter%20==0)
+           spawnBasicEnemy();
+
+       for (int i=0;i<enemies.size();i++) {
+            if (enemies.get(i).isDead()) {
+                towerboard.addCoins(enemies.get(i).getLevel()*25);
+                enemies.remove(i);
+            }
+            else if (enemies.get(i).isEscaped()) {
+                enemies.remove(i);
+                scoreboard.loseLife();
+            }
         }
 
         if (enemies.size() == 0 && isRound) {
@@ -114,13 +131,19 @@ public class Gameboard extends JPanel
             e.draw(myBuffer);
             e.tick();
         }
-        for (Tower t : towers)
+
+        for (Tower t : towers) {
             t.draw(myBuffer);
+            t.tick();
+        }
 
          repaint();
 
          if(scoreboard.getLife()==0)
              scoreboard.endGame();
+
+         if(bEnemyCounter>=0)
+         bEnemyCounter--;
 
     }
    

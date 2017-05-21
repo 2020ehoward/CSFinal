@@ -12,7 +12,7 @@ public class Enemy {
     public static final int WEST = 3;
 
     private boolean isDead,isEscaped,isEscaping;
-private int x,y,direction,health,speed;
+private int x,y,direction,health,speed,level;
 private ImageIcon texture;
 
     public Enemy(Gameboard g, int health, int speed, ImageIcon texture) {
@@ -58,6 +58,7 @@ private ImageIcon texture;
         }
 
 
+        this.level = health;
         this.health = health;
         this.speed = speed;
         this.texture = texture;
@@ -127,8 +128,24 @@ private ImageIcon texture;
             }
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void removeHealth(int damage) {
+        this.health-=damage;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public boolean isDead() {
@@ -137,6 +154,10 @@ private ImageIcon texture;
 
     public boolean isEscaped() {
         return isEscaped;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x,y,texture.getIconWidth(),texture.getIconHeight());
     }
 
     public void draw(Graphics g) {

@@ -15,8 +15,8 @@ public class Scoreboard extends JPanel
    public Scoreboard(MainPanel mPanel)
    {
        this.mPanel = mPanel;
-       life = 100;
-       round = 1;
+       life = 250;
+       round = 0;
        speed = 0;
 
        setLayout(new BorderLayout());
