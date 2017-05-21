@@ -49,18 +49,18 @@ public class Gameboard extends JPanel
 
        drawMap();
 
-       add(new Enemy(0,(SQUARESIZE*getEntrance())+(int)(Math.random()*30),Enemy.EAST,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
+       add(new Enemy(this,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
    }
     public void paintComponent(Graphics g) {
         g.drawImage(this.myImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
-    public int getEntrance() {
+    public Point getEntrance() {
        for(int x=0;x<WIDTH;x++)
            for(int y=0;y<WIDTH;y++)
                if(map[x][y]==2)
-                   return x;
-       return -1;
+                   return new Point(x,y);
+       return null;
     }
 
     public void drawMap() {
@@ -79,7 +79,7 @@ public class Gameboard extends JPanel
     }
 
     public void nextRound() {
-        add(new Enemy(0,(SQUARESIZE*getEntrance())+(int)(Math.random()*30),Enemy.EAST,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
+        add(new Enemy(this,100,5,new ImageIcon("Textures/Enemies/enemy1.png")));
     }
 
     public void add(Enemy e) {

@@ -15,10 +15,59 @@ public class Enemy {
 private int x,y,direction,health,speed;
 private ImageIcon texture;
 
-    public Enemy(int x, int y, int direction, int health, int speed, ImageIcon texture) {
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
+    public Enemy(Gameboard g, int health, int speed, ImageIcon texture) {
+        this.y = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
+        this.x = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
+        if(x<=30) {
+            x-=texture.getIconWidth();
+            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
+            if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX()) + 1] == 0)
+                direction = EAST;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
+                direction = SOUTH;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
+                direction = NORTH;
+        }
+        else if(x>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
+            x+=Gameboard.SQUARESIZE;
+            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
+            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
+                direction = WEST;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
+                direction = SOUTH;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
+                direction = NORTH;
+        }
+        else if(y<=30) {
+            y-=texture.getIconHeight();
+            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
+            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
+                direction = WEST;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
+                direction = SOUTH;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())+1][(int) (g.getEntrance().getX())] == 0)
+                direction = EAST;
+        }
+        else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
+            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
+            y+=Gameboard.SQUARESIZE;
+            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
+                direction = WEST;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())+1][(int) (g.getEntrance().getX())] == 0)
+                direction = EAST;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
+                direction = NORTH;
+        }
+        else {
+            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
+                direction = WEST;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
+                direction = SOUTH;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
+                direction = NORTH;
+            else if (Gameboard.map[(int) (g.getEntrance().getY())+1][(int) (g.getEntrance().getX())] == 0)
+                direction = EAST;
+        }
         this.health = health;
         this.speed = speed;
         this.texture = texture;
