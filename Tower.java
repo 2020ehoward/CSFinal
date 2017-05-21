@@ -56,7 +56,7 @@ public class Tower {
         enemies = parentBoard.getEnemies();
         if(cooldown==0) {
             if(getClosestEnemy()!=-1) {
-                bullets.add(new Bullet(myBullet,(x*Gameboard.SQUARESIZE)+(myTexture.getIconWidth()/2),(y*Gameboard.SQUARESIZE)+(myTexture.getIconHeight()/2)));
+                bullets.add(new Bullet(myBullet,(x*Gameboard.SQUARESIZE)+(myTexture.getIconWidth()/4),(y*Gameboard.SQUARESIZE)+(myTexture.getIconHeight()/4)));
                 bullets.getLast().fireAt(enemies.get(getClosestEnemy()));
                 cooldown = speed;
             }
