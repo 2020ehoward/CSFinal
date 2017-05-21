@@ -56,9 +56,9 @@ public class Gameboard extends JPanel
     }
 
     public Point getEntrance() {
-       for(int x=0;x<WIDTH;x++)
-           for(int y=0;y<WIDTH;y++)
-               if(map[x][y]==2)
+       for(int y=0;y<WIDTH;y++)
+           for(int x=0;x<WIDTH;x++)
+               if(map[y][x]==2)
                    return new Point(x,y);
        return null;
     }

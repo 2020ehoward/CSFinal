@@ -16,58 +16,48 @@ private int x,y,direction,health,speed;
 private ImageIcon texture;
 
     public Enemy(Gameboard g, int health, int speed, ImageIcon texture) {
-        this.y = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
-        this.x = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
+        this.y = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
+        this.x = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
+
+        try {
+            if (Gameboard.map[y/Gameboard.SQUARESIZE - 1][x/Gameboard.SQUARESIZE] == 0)
+                direction = WEST;
+        } catch(ArrayIndexOutOfBoundsException e) {
+        }
+        try {
+        if (Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1] == 0)
+            direction = SOUTH;
+    } catch(ArrayIndexOutOfBoundsException e) {
+    }
+        try {
+        if (Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE-1] == 0)
+            direction = NORTH;
+} catch(ArrayIndexOutOfBoundsException e) {
+        }
+        try {
+        if (Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE] == 0)
+            direction = EAST;
+        } catch(ArrayIndexOutOfBoundsException e) {
+        }
+
         if(x<=30) {
             x-=texture.getIconWidth();
             y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
-            if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX()) + 1] == 0)
-                direction = EAST;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
-                direction = SOUTH;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
-                direction = NORTH;
         }
         else if(x>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             x+=Gameboard.SQUARESIZE;
             y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
-            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
-                direction = WEST;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
-                direction = SOUTH;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
-                direction = NORTH;
         }
         else if(y<=30) {
             y-=texture.getIconHeight();
             x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
-            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
-                direction = WEST;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
-                direction = SOUTH;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())+1][(int) (g.getEntrance().getX())] == 0)
-                direction = EAST;
         }
         else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
             y+=Gameboard.SQUARESIZE;
-            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
-                direction = WEST;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())+1][(int) (g.getEntrance().getX())] == 0)
-                direction = EAST;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
-                direction = NORTH;
         }
-        else {
-            if (Gameboard.map[(int) (g.getEntrance().getY())-1][(int) (g.getEntrance().getX())] == 0)
-                direction = WEST;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())+1] == 0)
-                direction = SOUTH;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())][(int) (g.getEntrance().getX())-1] == 0)
-                direction = NORTH;
-            else if (Gameboard.map[(int) (g.getEntrance().getY())+1][(int) (g.getEntrance().getX())] == 0)
-                direction = EAST;
-        }
+
+
         this.health = health;
         this.speed = speed;
         this.texture = texture;
@@ -78,17 +68,18 @@ private ImageIcon texture;
         if(health==0)
             isDead = true;
 
+        if(x<0-texture.getIconWidth() || x>Gameboard.IMAGEWIDTH || y<0-texture.getIconHeight() || y>Gameboard.IMAGEWIDTH)
+            isEscaped = true;
+
+        if(!isEscaped)
         if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE]==3)
             isEscaping=true;
-
-        if(x<0-texture.getIconWidth() || x>Gameboard.IMAGEWIDTH+texture.getIconWidth() || y<0-texture.getIconHeight() || y>Gameboard.IMAGEWIDTH+texture.getIconHeight())
-            isEscaped = true;
 
         if(!isEscaping)
         switch(direction) {
             case 0:
                 if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE-1][x/Gameboard.SQUARESIZE]==1)
-                    if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0)
+                    if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0 || Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==3)
                         direction=EAST;
                     else
                         direction=WEST;
@@ -96,7 +87,7 @@ private ImageIcon texture;
                 break;
             case 1:
                 if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==1)
-                    if(Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE]==0)
+                    if(Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE]==0 || Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE] == 3)
                         direction=SOUTH;
                     else
                         direction=NORTH;
@@ -104,7 +95,7 @@ private ImageIcon texture;
                 break;
             case 2:
                 if(Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE]==1)
-                    if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0)
+                    if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0 || Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1] == 3)
                         direction=EAST;
                     else
                         direction=WEST;
@@ -112,7 +103,7 @@ private ImageIcon texture;
                 break;
             case 3:
                 if(Gameboard.map[y/Gameboard.SQUARESIZE][(x+40)/Gameboard.SQUARESIZE-1]==1)
-                    if(Gameboard.map[y/Gameboard.SQUARESIZE+1][(x+40)/Gameboard.SQUARESIZE]==0)
+                    if(Gameboard.map[y/Gameboard.SQUARESIZE+1][(x+40)/Gameboard.SQUARESIZE]==0 || Gameboard.map[y/Gameboard.SQUARESIZE+1][(x+40)/Gameboard.SQUARESIZE]==3)
                         direction=SOUTH;
                     else
                         direction=NORTH;
