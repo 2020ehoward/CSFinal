@@ -12,7 +12,7 @@ public class Tower {
     private Bullet myBullet;
     private LinkedList<Bullet> bullets;
     private ImageIcon myTexture;
-    private int x,y,speed,range,cooldown;
+    private int x,y,speed,range,cooldown,distance;
 
     public Tower(Gameboard g, Bullet myBullet, ImageIcon myTexture, int x, int y, int speed,int range) {
         this.bullets = new LinkedList<>();
@@ -27,16 +27,16 @@ public class Tower {
 
     public int getClosestEnemy() {
         if(enemies.size()!=0) {
-            int distance = Integer.MAX_VALUE;
+            this.distance = Integer.MAX_VALUE;
             int closest = 0;
             for (int i=0;i<enemies.size();i++) {
                 double dist = Math.sqrt(Math.pow(x*Gameboard.SQUARESIZE - enemies.get(i).getX(),2)+Math.pow( y*Gameboard.SQUARESIZE - enemies.get(i).getY(),2));
-                if (dist < distance && dist<range) {
-                    distance = (int)dist;
+                if (dist < this.distance && dist<range) {
+                    this.distance = (int)dist;
                     closest = i;
                 }
             }
-            if(distance<range)
+            if(this.distance<range)
             return closest;
             else
                 return -1;
@@ -57,7 +57,7 @@ public class Tower {
         if(cooldown==0) {
             if(getClosestEnemy()!=-1) {
                 bullets.add(new Bullet(myBullet,(x*Gameboard.SQUARESIZE)+(myTexture.getIconWidth()/4),(y*Gameboard.SQUARESIZE)+(myTexture.getIconHeight()/4)));
-                bullets.getLast().fireAt(enemies.get(getClosestEnemy()));
+                bullets.getLast().fireAt(enemies.get(getClosestEnemy()),distance,range);
                 cooldown = speed;
             }
         }

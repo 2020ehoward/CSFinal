@@ -69,15 +69,24 @@ public class Bullet {
         hasHit();
     }
 
-    public void fireAt(Enemy e) {
-        float dx,dy;
-        dx = e.getX()-x;
-        dy = e.getY()-y;
-        float length = (float)(Math.sqrt(dx*dx+dy*dy));
-        dx/=length;
-        dy/=length;
-        this.dx=(int)(dx*speed);
-        this.dy=(int)(dy*speed);
+    public void fireAt(Enemy e,int distance,int range) {
+        Enemy fakeEnemy = new Enemy(e);
+        int time = distance / speed;
+        for (int i = 0; i < time; i++)
+            fakeEnemy.tick();
+        distance = (int)(Math.sqrt(Math.pow(fakeEnemy.getX()-x,2)*Math.pow(fakeEnemy.getY()-y,2)));
+        if(!(distance>range*Gameboard.SQUARESIZE)) {
+            float dx, dy;
+            dx = fakeEnemy.getX() - x;
+            dy = fakeEnemy.getY() - y;
+            float length = (float) (Math.sqrt(dx * dx + dy * dy));
+            dx /= length;
+            dy /= length;
+            this.dx = (int) (dx * speed);
+            this.dy = (int) (dy * speed);
+        }
+        else
+            isGone=true;
     }
 
     public Rectangle getBounds() {

@@ -15,6 +15,17 @@ public class Enemy {
 private int x,y,direction,health,speed,level;
 private ImageIcon texture;
 
+    public Enemy(Enemy e) {
+        this.x=e.getX();
+        this.y=e.getY();
+        this.speed = e.getSpeed();
+        this.health = e.getHealth();
+        this.direction = e.getDirection();
+        this.isEscaping = e.isEscaping();
+        this.isEscaped = e.isEscaped();
+        this.texture = e.getTexture();
+    }
+
     public Enemy(Gameboard g, int health, int speed, ImageIcon texture) {
         this.y = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
         this.x = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
@@ -140,6 +151,14 @@ private ImageIcon texture;
         return level;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
     public void removeHealth(int damage) {
         this.health-=damage;
     }
@@ -156,8 +175,20 @@ private ImageIcon texture;
         return isEscaped;
     }
 
+    public boolean isEscaping() {
+        return isEscaping;
+    }
+
     public Rectangle getBounds() {
         return new Rectangle(x,y,texture.getIconWidth(),texture.getIconHeight());
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public ImageIcon getTexture() {
+        return texture;
     }
 
     public void draw(Graphics g) {
