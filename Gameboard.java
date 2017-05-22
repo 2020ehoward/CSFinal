@@ -91,7 +91,7 @@ public class Gameboard extends JPanel
     }
 
     public  void spawnBasicTower(int x,int y) {
-        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/basicBullet.jpg"),1,10),new ImageIcon("Textures/Towers/basicTower.png"),x,y,50,3*SQUARESIZE));
+        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/basicBullet.jpg"),1,10),new ImageIcon("Textures/Towers/Tower0.png"),x,y,50,3*SQUARESIZE));
     }
 
     public LinkedList<Enemy> getEnemies() {
