@@ -209,11 +209,16 @@ public class Gameboard extends JPanel
         }
 
         for(int i=0;i<6;i++) {
-           if(towerboard.getSpawn(i))
-               switch(i) {
-                   case 0: myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower0.png").getImage().getScaledInstance(SQUARESIZE,SQUARESIZE,Image.SCALE_SMOOTH)).getImage(),towerX,towerY,null);
-                   break;
+           if(towerboard.getSpawn(i)) {
+               Color rangeCircle = Color.GRAY;
+               myBuffer.setColor(new Color(rangeCircle.getRed(),rangeCircle.getGreen(),rangeCircle.getBlue(),200));
+               switch (i) {
+                   case 0:
+                       myBuffer.fillOval((towerX+SQUARESIZE/2)-3*SQUARESIZE,(towerY+SQUARESIZE/2)-3*SQUARESIZE,6*SQUARESIZE,6*SQUARESIZE);
+                       myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower0.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
+                       break;
                }
+           }
         }
 
          repaint();
