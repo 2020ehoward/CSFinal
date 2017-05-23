@@ -74,8 +74,8 @@ public class Bullet {
         int time = distance / speed;
         for (int i = 0; i < time; i++)
             fakeEnemy.tick();
-        distance = (int)(Math.sqrt(Math.pow(fakeEnemy.getX()-x,2)*Math.pow(fakeEnemy.getY()-y,2)));
-        if(!(distance>range*Gameboard.SQUARESIZE)) {
+        distance = (int)(Math.sqrt(Math.pow(fakeEnemy.getX()-x,2)+Math.pow(fakeEnemy.getY()-y,2)));
+        if(distance<range) {
             float dx, dy;
             dx = fakeEnemy.getX() - x;
             dy = fakeEnemy.getY() - y;

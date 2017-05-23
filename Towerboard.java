@@ -1,25 +1,42 @@
 //Evan Howard, 11 May 2017
+import sun.security.krb5.SCDynamicStoreConfig;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class Towerboard extends JPanel
 {
-    private boolean spawnBasic;
+    private boolean infoBasic,spawnBasic;
    private JButton[][] towers;
-   private JLabel coinLabel;
+   private JLabel coinLabel,infoLabel;
    private int coin;
    public Towerboard()
    {
-       spawnBasic=false;
+       spawnBasic=infoBasic=false;
        coin = 650;
       setLayout(new BorderLayout());
       setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
 
+      JPanel labelPanel = new JPanel();
+      labelPanel.setBackground(Scoreboard.BACKGROUND);
+      labelPanel.setLayout(new BorderLayout());
+
+      infoLabel = new JLabel();
+      infoLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+      infoLabel.setFont(new Font("Monospaced",Font.BOLD,12));
+      infoLabel.setPreferredSize(new Dimension(130,175));
+      labelPanel.add(infoLabel,BorderLayout.SOUTH);
+
       coinLabel = new JLabel("Coins: "+coin);
        coinLabel.setFont(new Font("Monospaced",Font.BOLD,24));
-       add(coinLabel,BorderLayout.NORTH);
+       labelPanel.add(coinLabel,BorderLayout.NORTH);
+
+       add(labelPanel,BorderLayout.NORTH);
+
       towers = new JButton[2][3];
       ImageIcon[] towerTextures = new ImageIcon[6];
 
@@ -43,6 +60,7 @@ public class Towerboard extends JPanel
               towers[x][y].addActionListener(new towerListener(count));
               towers[x][y].setPreferredSize(new Dimension(64,72));
               towers[x][y].setEnabled(false);
+              towers[x][y].addMouseListener(new mouseListener(count));
               shop.add(towers[x][y]);
               count++;
           }
@@ -65,6 +83,44 @@ public class Towerboard extends JPanel
        public void actionPerformed(ActionEvent actionEvent) {
            for(int i=0;i<towers.length;i++)
                setSpawn(i);
+       }
+   }
+
+   private class mouseListener implements MouseListener {
+
+       private int myTower;
+       public mouseListener(int myTower) {
+           this.myTower=myTower;
+       }
+       @Override
+       public void mouseClicked(MouseEvent mouseEvent) {
+
+       }
+
+       @Override
+       public void mousePressed(MouseEvent mouseEvent) {
+
+       }
+
+       @Override
+       public void mouseReleased(MouseEvent mouseEvent) {
+
+       }
+
+       @Override
+       public void mouseEntered(MouseEvent mouseEvent) {
+        switch(myTower) {
+            case 0: infoBasic=true;
+            break;
+        }
+       }
+
+       @Override
+       public void mouseExited(MouseEvent mouseEvent) {
+        switch(myTower) {
+            case 0: infoBasic=false;
+            break;
+        }
        }
    }
 
@@ -112,6 +168,10 @@ public class Towerboard extends JPanel
 
         }
    public void update() {
+       if(infoBasic)
+           infoLabel.setText("<html>200 Coins<br>Basic Tower<br>Standard Tower that shoots<br>moderately fast</html>");
+       else
+           infoLabel.setText("");
        coinLabel.setText("Coins: "+coin);
    }
 }

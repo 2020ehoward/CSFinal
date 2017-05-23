@@ -56,6 +56,8 @@ public class Tower {
             if(getClosestEnemy()!=-1) {
                 bullets.add(new Bullet(myBullet,(x)+(myTexture.getIconWidth()/4),(y)+(myTexture.getIconHeight()/4)));
                 bullets.getLast().fireAt(enemies.get(getClosestEnemy()),distance,range);
+                if(bullets.getLast().isGone())
+                    bullets.removeLast();
                 cooldown = speed;
             }
         }
