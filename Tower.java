@@ -30,7 +30,7 @@ public class Tower {
             this.distance = Integer.MAX_VALUE;
             int closest = 0;
             for (int i=0;i<enemies.size();i++) {
-                double dist = Math.sqrt(Math.pow(x*Gameboard.SQUARESIZE - enemies.get(i).getX(),2)+Math.pow( y*Gameboard.SQUARESIZE - enemies.get(i).getY(),2));
+                double dist = Math.sqrt(Math.pow(x - enemies.get(i).getX(),2)+Math.pow( y - enemies.get(i).getY(),2));
                 if (dist < this.distance && dist<range) {
                     this.distance = (int)dist;
                     closest = i;
@@ -56,7 +56,7 @@ public class Tower {
         enemies = parentBoard.getEnemies();
         if(cooldown==0) {
             if(getClosestEnemy()!=-1) {
-                bullets.add(new Bullet(myBullet,(x*Gameboard.SQUARESIZE)+(myTexture.getIconWidth()/4),(y*Gameboard.SQUARESIZE)+(myTexture.getIconHeight()/4)));
+                bullets.add(new Bullet(myBullet,(x)+(myTexture.getIconWidth()/4),(y)+(myTexture.getIconHeight()/4)));
                 bullets.getLast().fireAt(enemies.get(getClosestEnemy()),distance,range);
                 cooldown = speed;
             }
@@ -65,8 +65,16 @@ public class Tower {
             cooldown--;
     }
 
+    public Rectangle getBounds() {
+        return new Rectangle(x,y,myTexture.getIconWidth(),myTexture.getIconHeight());
+    }
+
+    public void endRound() {
+        bullets.clear();
+    }
+
     public void draw(Graphics g) {
-        g.drawImage(myTexture.getImage(),x*Gameboard.SQUARESIZE,y*Gameboard.SQUARESIZE,null);
+        g.drawImage(myTexture.getImage(),x,y,null);
         for(Bullet b : bullets)
         b.draw(g);
     }

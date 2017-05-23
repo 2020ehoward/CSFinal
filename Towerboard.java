@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 
 public class Towerboard extends JPanel
 {
+    private boolean spawnBasic;
    private JButton[][] towers;
    private JLabel coinLabel;
    private int coin;
    public Towerboard()
    {
+       spawnBasic=false;
        coin = 0;
       setLayout(new BorderLayout());
       setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
@@ -45,6 +47,7 @@ public class Towerboard extends JPanel
           }
 
          JButton cancel = new JButton("Cancel");
+      cancel.addActionListener(new cancelListener());
          cancel.setFont(new Font("Monospaced",Font.BOLD, 24));
 
          sCancel.add(shop);
@@ -52,6 +55,14 @@ public class Towerboard extends JPanel
          add(sCancel,BorderLayout.SOUTH);
 
       setBackground(Scoreboard.BACKGROUND);
+   }
+
+   private class cancelListener implements ActionListener {
+       @Override
+       public void actionPerformed(ActionEvent actionEvent) {
+           for(int i=0;i<towers.length;i++)
+               setSpawn(i);
+       }
    }
 
     private class towerListener implements ActionListener {
@@ -63,8 +74,25 @@ public class Towerboard extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(myTower) {
+                case 0: spawnBasic=true;
+                break;
             }
         }
+        }
+
+        public boolean getSpawn(int x) {
+       switch(x) {
+           case 0: return spawnBasic;
+           default: return false;
+       }
+        }
+
+        public void setSpawn(int x) {
+       switch(x) {
+           case 0: spawnBasic = false;
+           break;
+       }
+
         }
    public void addCoins(int coin) {
        this.coin+=coin;
