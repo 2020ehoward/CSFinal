@@ -17,7 +17,8 @@ public class Tower {
     public Tower(Gameboard g, Bullet myBullet, ImageIcon myTexture, int x, int y, int speed,int range) {
         this.bullets = new LinkedList<>();
         this.range = range;
-        this.speed = this.cooldown = speed;
+        this.speed = speed;
+        this.cooldown=0;
         this.parentBoard = g;
         this.myBullet = myBullet;
         this.myTexture = new ImageIcon(new ImageIcon(myTexture.getImage()).getImage().getScaledInstance(Gameboard.SQUARESIZE,Gameboard.SQUARESIZE,java.awt.Image.SCALE_SMOOTH));
@@ -31,15 +32,12 @@ public class Tower {
             int closest = 0;
             for (int i=0;i<enemies.size();i++) {
                 double dist = Math.sqrt(Math.pow(x - enemies.get(i).getX(),2)+Math.pow( y - enemies.get(i).getY(),2));
-                if (dist < this.distance && dist<range) {
+                if (dist < this.distance) {
                     this.distance = (int)dist;
                     closest = i;
                 }
             }
-            if(this.distance<range)
             return closest;
-            else
-                return -1;
         }
         else
             return -1;

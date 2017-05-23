@@ -14,7 +14,7 @@ public class MainPanel extends JPanel
    private Towerboard towerboard;
    private javax.swing.Timer t;
 
-   public MainPanel()
+   public MainPanel(JFrame parentFrame)
    {
       setLayout(new BorderLayout());
    
@@ -24,10 +24,11 @@ public class MainPanel extends JPanel
       towerboard = new Towerboard();
       add(towerboard,BorderLayout.EAST);
 
-       gameboard = new Gameboard(scoreboard,towerboard);
+       gameboard = new Gameboard(parentFrame,scoreboard,towerboard);
        add(gameboard,BorderLayout.CENTER);
       
-      t = new javax.swing.Timer(0, new Listener());
+      t = new javax.swing.Timer(10, new Listener());
+      t.start();
    }
    private class Listener implements ActionListener
    {
@@ -39,12 +40,7 @@ public class MainPanel extends JPanel
       }
    }
    public void setSpeed(int x) {
-       if(x!=0) {
-           t.start();
            t.setDelay(x);
-       }
-       else
-           t.stop();
    }
    
 }

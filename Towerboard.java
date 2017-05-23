@@ -13,7 +13,7 @@ public class Towerboard extends JPanel
    public Towerboard()
    {
        spawnBasic=false;
-       coin = 0;
+       coin = 650;
       setLayout(new BorderLayout());
       setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
 
@@ -42,9 +42,12 @@ public class Towerboard extends JPanel
               towers[x][y].setBackground(Scoreboard.BACKGROUND);
               towers[x][y].addActionListener(new towerListener(count));
               towers[x][y].setPreferredSize(new Dimension(64,72));
+              towers[x][y].setEnabled(false);
               shop.add(towers[x][y]);
               count++;
           }
+
+          towers[0][0].setEnabled(true);
 
          JButton cancel = new JButton("Cancel");
       cancel.addActionListener(new cancelListener());
@@ -87,16 +90,27 @@ public class Towerboard extends JPanel
        }
         }
 
-        public void setSpawn(int x) {
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+        if(coin>=200)
+            towers[0][0].setEnabled(true);
+        else
+            towers[0][0].setEnabled(false);
+    }
+
+    public void setSpawn(int x) {
        switch(x) {
            case 0: spawnBasic = false;
            break;
        }
 
+
+
         }
-   public void addCoins(int coin) {
-       this.coin+=coin;
-   }
    public void update() {
        coinLabel.setText("Coins: "+coin);
    }

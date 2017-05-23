@@ -30,21 +30,23 @@ public class Gameboard extends JPanel
     };
 
     private boolean isRound;
-    private int bEnemyCounter,towerX,towerY;
+    private int bEnemyCounter,towerX,towerY,numEnemies;
 
     private Towerboard towerboard;
     private Scoreboard scoreboard;
+    private JFrame parentFrame;
     private BufferedImage myImage = new BufferedImage(IMAGEWIDTH, IMAGEWIDTH, 1);
     private Graphics myBuffer;
     private ImageIcon water,grass,dirt;
     private LinkedList<Enemy> enemies;
     private LinkedList<Tower> towers;
-   public Gameboard(Scoreboard scoreboard,Towerboard towerboard)
+   public Gameboard(JFrame parentFrame, Scoreboard scoreboard,Towerboard towerboard)
    {
+       this.parentFrame = parentFrame;
        this.towerboard = towerboard;
        this.scoreboard = scoreboard;
        isRound=false;
-       bEnemyCounter=0;
+       bEnemyCounter=numEnemies=0;
        towers = new LinkedList<>();
        enemies = new LinkedList<>();
 
@@ -87,7 +89,15 @@ public class Gameboard extends JPanel
     }
 
     public void nextRound() {
+       //here we go bois // well maybe later
+//        switch(scoreboard.getRound()){
+//            case 0: bEnemyCounter=400;
+//            numEnemies=20;
+//            break;
+//        }
         bEnemyCounter=scoreboard.getRound()*20;
+        numEnemies=scoreboard.getRound()+1;
+
     }
 
     public void spawnBasicEnemy() {
@@ -107,19 +117,10 @@ public class Gameboard extends JPanel
        }
 
         @Override
-        public void mouseEntered(MouseEvent mouseEvent) {
-            super.mouseEntered(mouseEvent);
-        }
-
-        @Override
-        public void mouseExited(MouseEvent mouseEvent) {
-        }
-
-        @Override
         public void mouseClicked(MouseEvent mouseEvent) {
            boolean intersects = false;
-           int x = map(mouseEvent.getX(),SQUARESIZE/2,716-SQUARESIZE/2,0,800);
-           int y = map(mouseEvent.getY(),0,716,0,800)-SQUARESIZE/2;
+           int x=towerX;
+           int y=towerY;
             super.mouseClicked(mouseEvent);
             for(int i=0;i<6;i++)
                 if(towerboard.getSpawn(i)) {
@@ -134,6 +135,7 @@ public class Gameboard extends JPanel
                     if(!intersects)
                                     switch (i) {
                                         case 0:
+                                            towerboard.setCoin(towerboard.getCoin()-200);
                                             spawnBasicTower(x, y);
                                             towerboard.setSpawn(0);
                                             break;
@@ -144,16 +146,17 @@ public class Gameboard extends JPanel
 
     private class MouseMotion implements MouseMotionListener {
 
+
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-            towerX=map(mouseEvent.getX(),SQUARESIZE/2,716-SQUARESIZE/2,0,800);
-            towerY=map(mouseEvent.getY(),0,716,0,800)-SQUARESIZE/2;
+            towerX=map(mouseEvent.getX(),SQUARESIZE/2,(parentFrame.getWidth()-84)-SQUARESIZE/2,0,800);
+            towerY=map(mouseEvent.getY(),0,parentFrame.getHeight()-84,0,800)-SQUARESIZE/2;
         }
 
         @Override
         public void mouseMoved(MouseEvent mouseEvent) {
-            towerX=map(mouseEvent.getX(),SQUARESIZE/2,716-SQUARESIZE/2,0,800);
-            towerY=map(mouseEvent.getY(),0,716,0,800)-SQUARESIZE/2;
+            towerX=map(mouseEvent.getX(),SQUARESIZE/2,(parentFrame.getWidth()-84)-SQUARESIZE/2,0,800);
+            towerY=map(mouseEvent.getY(),0,parentFrame.getHeight()-84,0,800)-SQUARESIZE/2;
         }
     }
 
@@ -178,17 +181,17 @@ public class Gameboard extends JPanel
 
            for (int i = 0; i < enemies.size(); i++) {
                if (enemies.get(i).isDead()) {
-                   towerboard.addCoins(enemies.get(i).getLevel() * 25);
+                   towerboard.setCoin(towerboard.getCoin()+enemies.get(i).getLevel() * 25);
                    enemies.remove(i);
+                   numEnemies--;
                } else if (enemies.get(i).isEscaped()) {
                    enemies.remove(i);
                    scoreboard.loseLife();
+                   numEnemies--;
                }
            }
 
-           if (enemies.size() == 0 && isRound) {
-               for (int i = 0; i < 6; i++)
-                   towerboard.setSpawn(i);
+           if (numEnemies==0 && isRound) {
                isRound = false;
                scoreboard.pause();
                for (Tower t : towers)
@@ -218,7 +221,7 @@ public class Gameboard extends JPanel
         for (int i = 0; i < 6; i++) {
             if (towerboard.getSpawn(i)) {
                 Color rangeCircle = Color.GRAY;
-                myBuffer.setColor(new Color(rangeCircle.getRed(), rangeCircle.getGreen(), rangeCircle.getBlue(), 200));
+                myBuffer.setColor(new Color(rangeCircle.getRed(), rangeCircle.getGreen(), rangeCircle.getBlue(), 150));
                 switch (i) {
                     case 0:
                         myBuffer.fillOval((towerX + SQUARESIZE / 2) - 3 * SQUARESIZE, (towerY + SQUARESIZE / 2) - 3 * SQUARESIZE, 6 * SQUARESIZE, 6 * SQUARESIZE);

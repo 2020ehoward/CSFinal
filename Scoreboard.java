@@ -16,7 +16,7 @@ public class Scoreboard extends JPanel
    public Scoreboard(MainPanel mPanel)
    {
        this.mPanel = mPanel;
-       life = 250;
+       life = 150;
        round = 0;
        speed = 10;
        isPaused=true;
@@ -56,7 +56,7 @@ public class Scoreboard extends JPanel
    }
 
     public void loseLife() {
-        this.life-=5;
+        this.life--;
     }
 
     public int getLife() {
