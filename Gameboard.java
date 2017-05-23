@@ -113,9 +113,6 @@ public class Gameboard extends JPanel
 
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
-            super.mouseExited(mouseEvent);
-            for(int i=0;i<6;i++)
-                towerboard.setSpawn(i);
         }
 
         @Override
@@ -142,7 +139,6 @@ public class Gameboard extends JPanel
                                             break;
                                     }
                 }
-                intersects=false;
         }
     }
 
@@ -169,65 +165,73 @@ public class Gameboard extends JPanel
 
        drawMap();
 
-        if (!isRound) {
-            nextRound();
-            scoreboard.nextRound();
-            isRound = true;
-        }
+       if(!scoreboard.isPaused()) {
 
-       if(bEnemyCounter%20==0)
-           spawnBasicEnemy();
+           if (!isRound) {
+               nextRound();
+               scoreboard.nextRound();
+               isRound = true;
+           }
 
-       for (int i=0;i<enemies.size();i++) {
-            if (enemies.get(i).isDead()) {
-                towerboard.addCoins(enemies.get(i).getLevel()*25);
-                enemies.remove(i);
-            }
-            else if (enemies.get(i).isEscaped()) {
-                enemies.remove(i);
-                scoreboard.loseLife();
-            }
-        }
+           if (bEnemyCounter % 20 == 0)
+               spawnBasicEnemy();
 
-        if (enemies.size() == 0 && isRound) {
-           for(int i=0;i<6;i++)
-               towerboard.setSpawn(i);
-            isRound = false;
-            scoreboard.pause();
-            for(Tower t : towers)
-                t.endRound();
-        }
+           for (int i = 0; i < enemies.size(); i++) {
+               if (enemies.get(i).isDead()) {
+                   towerboard.addCoins(enemies.get(i).getLevel() * 25);
+                   enemies.remove(i);
+               } else if (enemies.get(i).isEscaped()) {
+                   enemies.remove(i);
+                   scoreboard.loseLife();
+               }
+           }
+
+           if (enemies.size() == 0 && isRound) {
+               for (int i = 0; i < 6; i++)
+                   towerboard.setSpawn(i);
+               isRound = false;
+               scoreboard.pause();
+               for (Tower t : towers)
+                   t.endRound();
+           }
+
+           for (Enemy e : enemies) {
+               e.tick();
+           }
+
+           for (Tower t : towers) {
+               t.tick();
+           }
+
+           if(bEnemyCounter>=0)
+               bEnemyCounter--;
+       }
 
         for (Enemy e : enemies) {
             e.draw(myBuffer);
-            e.tick();
         }
 
         for (Tower t : towers) {
             t.draw(myBuffer);
-            t.tick();
         }
 
-        for(int i=0;i<6;i++) {
-           if(towerboard.getSpawn(i)) {
-               Color rangeCircle = Color.GRAY;
-               myBuffer.setColor(new Color(rangeCircle.getRed(),rangeCircle.getGreen(),rangeCircle.getBlue(),200));
-               switch (i) {
-                   case 0:
-                       myBuffer.fillOval((towerX+SQUARESIZE/2)-3*SQUARESIZE,(towerY+SQUARESIZE/2)-3*SQUARESIZE,6*SQUARESIZE,6*SQUARESIZE);
-                       myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower0.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
-                       break;
-               }
-           }
+        for (int i = 0; i < 6; i++) {
+            if (towerboard.getSpawn(i)) {
+                Color rangeCircle = Color.GRAY;
+                myBuffer.setColor(new Color(rangeCircle.getRed(), rangeCircle.getGreen(), rangeCircle.getBlue(), 200));
+                switch (i) {
+                    case 0:
+                        myBuffer.fillOval((towerX + SQUARESIZE / 2) - 3 * SQUARESIZE, (towerY + SQUARESIZE / 2) - 3 * SQUARESIZE, 6 * SQUARESIZE, 6 * SQUARESIZE);
+                        myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower0.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
+                        break;
+                }
+            }
         }
 
          repaint();
 
          if(scoreboard.getLife()==0)
              scoreboard.endGame();
-
-         if(bEnemyCounter>=0)
-         bEnemyCounter--;
 
     }
    
