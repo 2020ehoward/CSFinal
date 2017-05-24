@@ -1,6 +1,4 @@
 //Evan Howard, 11 May 2017
-import sun.security.krb5.SCDynamicStoreConfig;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +24,6 @@ public class Towerboard extends JPanel
       labelPanel.setLayout(new BorderLayout());
 
       infoLabel = new JLabel();
-      infoLabel.setHorizontalTextPosition(SwingConstants.CENTER);
       infoLabel.setFont(new Font("Monospaced",Font.BOLD,12));
       infoLabel.setPreferredSize(new Dimension(130,175));
       labelPanel.add(infoLabel,BorderLayout.SOUTH);
@@ -168,8 +165,9 @@ public class Towerboard extends JPanel
 
         }
    public void update() {
-       if(infoBasic)
-           infoLabel.setText("<html>200 Coins<br>Basic Tower<br>Standard Tower that shoots<br>moderately fast</html>");
+       if(infoBasic) {
+           infoLabel.setText("<html><center>200 Coins<br>Spaghetti & Meatballs<br>A standard tower that shoots moderately fast</center></html>");
+       }
        else
            infoLabel.setText("");
        coinLabel.setText("Coins: "+coin);

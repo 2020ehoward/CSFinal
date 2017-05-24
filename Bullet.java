@@ -27,7 +27,7 @@ public class Bullet {
     public Bullet(Gameboard g, ImageIcon myTexture, int damage, int speed) {
         this.speed = speed;
         this.g = g;
-        this.myTexture = myTexture;
+        this.myTexture = new ImageIcon(myTexture.getImage().getScaledInstance(Gameboard.SQUARESIZE/2,Gameboard.SQUARESIZE/2,Image.SCALE_SMOOTH));
         this.damage = damage;
     }
 

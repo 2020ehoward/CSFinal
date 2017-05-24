@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
 
 /**
  * Created by evanphoward on 5/16/17.
