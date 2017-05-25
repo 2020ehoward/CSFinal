@@ -52,7 +52,7 @@ private ImageIcon texture;
 
         if(x<=30) {
             x-=texture.getIconWidth();
-            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
+            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-20));
         }
         else if(x>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             x+=Gameboard.SQUARESIZE;

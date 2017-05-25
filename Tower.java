@@ -32,12 +32,15 @@ public class Tower {
             int closest = 0;
             for (int i=0;i<enemies.size();i++) {
                 double dist = Math.sqrt(Math.pow(x - enemies.get(i).getX(),2)+Math.pow( y - enemies.get(i).getY(),2));
-                if (dist < this.distance) {
+                if (dist < this.distance && dist < range) {
                     this.distance = (int)dist;
                     closest = i;
                 }
             }
+            if(distance<range)
             return closest;
+            else
+                return -1;
         }
         else
             return -1;

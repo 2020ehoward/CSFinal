@@ -8,13 +8,13 @@ import java.awt.event.MouseListener;
 
 public class Towerboard extends JPanel
 {
-    private boolean infoBasic,spawnBasic;
+    private boolean infoBasic,spawnBasic,infoCircle,spawnCircle;
    private JButton[][] towers;
    private JLabel coinLabel,infoLabel;
    private int coin;
    public Towerboard()
    {
-       spawnBasic=infoBasic=false;
+       spawnBasic=infoBasic=infoCircle=spawnCircle=false;
        coin = 650;
       setLayout(new BorderLayout());
       setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
@@ -61,7 +61,7 @@ public class Towerboard extends JPanel
               shop.add(towers[x][y]);
               count++;
           }
-
+        towers[0][1].setEnabled(true);
           towers[0][0].setEnabled(true);
 
          JButton cancel = new JButton("Cancel");
@@ -108,6 +108,7 @@ public class Towerboard extends JPanel
        public void mouseEntered(MouseEvent mouseEvent) {
         switch(myTower) {
             case 0: infoBasic=true;
+            case 1: infoCircle=true;
             break;
         }
        }
@@ -116,6 +117,7 @@ public class Towerboard extends JPanel
        public void mouseExited(MouseEvent mouseEvent) {
         switch(myTower) {
             case 0: infoBasic=false;
+            case 1: infoCircle=false;
             break;
         }
        }
@@ -131,6 +133,7 @@ public class Towerboard extends JPanel
         public void actionPerformed(ActionEvent e) {
             switch(myTower) {
                 case 0: spawnBasic=true;
+                case 1: spawnCircle=true;
                 break;
             }
         }
@@ -139,6 +142,7 @@ public class Towerboard extends JPanel
         public boolean getSpawn(int x) {
        switch(x) {
            case 0: return spawnBasic;
+           case 1: return spawnCircle;
            default: return false;
        }
         }
@@ -153,11 +157,16 @@ public class Towerboard extends JPanel
             towers[0][0].setEnabled(true);
         else
             towers[0][0].setEnabled(false);
+        if(coin>=360)
+            towers[0][1].setEnabled(true);
+        else
+            towers[0][1].setEnabled(false);
     }
 
     public void setSpawn(int x) {
        switch(x) {
            case 0: spawnBasic = false;
+
            break;
        }
 
@@ -168,6 +177,8 @@ public class Towerboard extends JPanel
        if(infoBasic) {
            infoLabel.setText("<html><center>200 Coins<br>Spaghetti & Meatballs<br>A standard tower that shoots moderately fast</center></html>");
        }
+       else if(infoCircle)
+           infoLabel.setText("<html><center>360 Coins<br>Pepperoni Pizza<br>A slow tower that shoots in a circle</center></html>");
        else
            infoLabel.setText("");
        coinLabel.setText("Coins: "+coin);
