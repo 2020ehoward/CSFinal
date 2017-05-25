@@ -108,6 +108,7 @@ public class Towerboard extends JPanel
        public void mouseEntered(MouseEvent mouseEvent) {
         switch(myTower) {
             case 0: infoBasic=true;
+            break;
             case 1: infoCircle=true;
             break;
         }
@@ -117,6 +118,7 @@ public class Towerboard extends JPanel
        public void mouseExited(MouseEvent mouseEvent) {
         switch(myTower) {
             case 0: infoBasic=false;
+            break;
             case 1: infoCircle=false;
             break;
         }
@@ -133,6 +135,7 @@ public class Towerboard extends JPanel
         public void actionPerformed(ActionEvent e) {
             switch(myTower) {
                 case 0: spawnBasic=true;
+                break;
                 case 1: spawnCircle=true;
                 break;
             }
@@ -166,6 +169,7 @@ public class Towerboard extends JPanel
     public void setSpawn(int x) {
        switch(x) {
            case 0: spawnBasic = false;
+           break;
            case 1: spawnCircle = false;
            break;
        }
