@@ -78,7 +78,7 @@ public class Towerboard extends JPanel
    private class cancelListener implements ActionListener {
        @Override
        public void actionPerformed(ActionEvent actionEvent) {
-           for(int i=0;i<towers.length;i++)
+           for(int i=0;i<6;i++)
                setSpawn(i);
        }
    }
@@ -166,7 +166,7 @@ public class Towerboard extends JPanel
     public void setSpawn(int x) {
        switch(x) {
            case 0: spawnBasic = false;
-
+           case 1: spawnCircle = false;
            break;
        }
 

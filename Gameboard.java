@@ -109,7 +109,7 @@ public class Gameboard extends JPanel
     }
 
     public void spawnCircleTower(int x,int y) {
-        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/Bullet1.png"),1,10),new ImageIcon("Textures/Towers/Tower1.png"),x,y,50,3*SQUARESIZE));
+        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/Bullet1.png"),1,10),new ImageIcon("Textures/Towers/Tower1.png"),x,y,50,(int)(1.2*SQUARESIZE)));
 
     }
 
@@ -144,6 +144,10 @@ public class Gameboard extends JPanel
                                             spawnBasicTower(x, y);
                                             towerboard.setSpawn(0);
                                             break;
+                                        case 1:
+                                            towerboard.setCoin(towerboard.getCoin()-360);
+                                            spawnCircleTower(x,y);
+                                            towerboard.setSpawn(1);
                                     }
                 }
         }
@@ -232,6 +236,11 @@ public class Gameboard extends JPanel
                         myBuffer.fillOval((towerX + SQUARESIZE / 2) - 3 * SQUARESIZE, (towerY + SQUARESIZE / 2) - 3 * SQUARESIZE, 6 * SQUARESIZE, 6 * SQUARESIZE);
                         myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower0.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
                         break;
+                    case 1:
+                        myBuffer.fillOval((towerX + SQUARESIZE / 2) - (int)(1.2*SQUARESIZE), (towerY + SQUARESIZE / 2) - (int)(1.2 *SQUARESIZE), (int)(2.4 * SQUARESIZE), (int)(2.4 * SQUARESIZE));
+                        myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower1.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
+                        break;
+
                 }
             }
         }
