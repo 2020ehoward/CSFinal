@@ -5,6 +5,7 @@ public class Driver
 {
    public static void main(String[] args)
    {
+      //Standard driver, creates an 800x800 frame with a main panel within it, then sets it to visible
       JFrame frame = new JFrame("Spaghetti Tower Defense");
       frame.setSize(800, 800);
       frame.setLocation(0, 0);

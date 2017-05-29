@@ -149,6 +149,9 @@ public class Scoreboard extends JPanel
     public void update() {
         lifeLabel.setText("        Life Remaining: "+life);
         roundLabel.setText("Round: "+round+"    ");
+
+        if(life==0)
+            endGame();
    }
    
 }

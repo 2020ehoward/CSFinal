@@ -5,30 +5,39 @@ import java.awt.*;
  * Created by evanphoward on 5/16/17.
  */
 public class Enemy {
+    //final variables correspond to each direction
     public static final int NORTH = 0;
     public static final int EAST = 1;
     public static final int SOUTH = 2;
     public static final int WEST = 3;
 
+    //booleans to keep track if it is dead, escaped the map, or on the final square (escaping)
     private boolean isDead,isEscaped,isEscaping;
-private int x,y,direction,health,speed,level;
+    //x and y are the location
+    //direction is which way it is currently moving
+    //speed is how many pixels it moves every tick
+private int x,y,direction,speed,level;
+//the texture it uses
 private ImageIcon texture;
 
+    //this constructor is used to create an identical copy of a current enemy
+    //used in the bullet class to see where an enemy will be in a few ticks
     public Enemy(Enemy e) {
         this.x=e.getX();
         this.y=e.getY();
         this.speed = e.getSpeed();
-        this.health = e.getHealth();
         this.direction = e.getDirection();
         this.isEscaping = e.isEscaping();
         this.isEscaped = e.isEscaped();
-        this.texture = e.getTexture();
     }
 
-    public Enemy(Gameboard g, int health, int speed, ImageIcon texture) {
+    public Enemy(Gameboard g, int level, int speed, ImageIcon texture) {
+        //the enemy starts at the x and y values of the entrance of the map
         this.y = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
         this.x = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
 
+        //it checks which direction from the entrance is a path, that directions is the direction in which the enemy will move
+        //if that square is outside of the array, it obviously can't be that direction, so it catches the exception and moves on
         try {
             if (Gameboard.map[y/Gameboard.SQUARESIZE - 1][x/Gameboard.SQUARESIZE] == 0)
                 direction = WEST;
@@ -50,45 +59,68 @@ private ImageIcon texture;
         } catch(ArrayIndexOutOfBoundsException e) {
         }
 
+        //if it is on the left side
         if(x<=30) {
+            //it decreases the x by the width of the image, making it off the screen
             x-=texture.getIconWidth();
+            //randomly varies the y-value on the entrance
             y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-20));
         }
+        //if it is on the right
         else if(x>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
+            //put it off the screen
             x+=Gameboard.SQUARESIZE;
+            //vary the y-value across the entrance
             y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
         }
+        //if it is on the top
         else if(y<=30) {
+            //off the screen
             y-=texture.getIconHeight();
+            //random x-value
             x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
         }
+        //bottom of the screen
         else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
-            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
+            //off the screen
             y+=Gameboard.SQUARESIZE;
+            //random x-value
+            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
         }
 
 
-        this.level = health;
-        this.health = health;
+        //level,speed, and texture are all specified by the constructor
+        this.level = level;
         this.speed = speed;
         this.texture = texture;
+        //it starts out alive
         isDead = false;
     }
 
+    //method that runs every tick of the game
     public void tick() {
-        if(health==0)
+        //if it has reached level zero, it has been killed
+        if(level==0)
             isDead = true;
 
+        //if it is outside the map, it has escaped
         if(x<0-texture.getIconWidth() || x>Gameboard.IMAGEWIDTH || y<0-texture.getIconHeight() || y>Gameboard.IMAGEWIDTH)
             isEscaped = true;
 
+        //if it hasn't escaped yet
         if(!isEscaped)
+            //and it is in the exit square
         if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE]==3)
+            //it is in the process of escaping
             isEscaping=true;
 
+        //if it isn't in the exit square
         if(!isEscaping)
+            //switch the direction it is going
         switch(direction) {
+            //if it is going north
             case 0:
+                //if the current s
                 if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE-1][x/Gameboard.SQUARESIZE]==1)
                     if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0 || Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==3)
                         direction=EAST;
@@ -159,7 +191,7 @@ private ImageIcon texture;
     }
 
     public void removeHealth(int damage) {
-        this.health-=damage;
+        this.level-=damage;
     }
 
     public void setDead(boolean dead) {
@@ -180,10 +212,6 @@ private ImageIcon texture;
 
     public Rectangle getBounds() {
         return new Rectangle(x,y,texture.getIconWidth(),texture.getIconHeight());
-    }
-
-    public int getHealth() {
-        return health;
     }
 
     public ImageIcon getTexture() {
