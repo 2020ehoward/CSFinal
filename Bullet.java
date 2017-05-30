@@ -69,7 +69,15 @@ public class Bullet {
         hasHit();
     }
 
-    public void fireAt(Enemy e,int distance,int range) {
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
+    }
+
+    public void fireAt(Enemy e, int distance, int range) {
         Enemy fakeEnemy = new Enemy(e);
         int time = distance / speed;
         for (int i = 0; i < time; i++)

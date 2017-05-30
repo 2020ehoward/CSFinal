@@ -141,13 +141,13 @@ public class Gameboard extends JPanel
     public  void spawnBasicTower(int x,int y) {
        //spawns in a basic tower, adding it to the list
         //it has to corresponding basic bullet, with a damage of 1 and speed of 10, the basic tower texture, the x and y values specified by wherever this method is called, a speed(delay between shots) of 50, and a range of 3 squares
-        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10),new ImageIcon("Textures/Towers/Tower0.png"),x,y,50,3*SQUARESIZE));
+        towers.add(new BasicTower(this,x,y));
     }
 
     public void spawnCircleTower(int x,int y) {
        //spawns in a circle tower
         //corresponding bullet, texture, x and y, delay between shots of 50, and a range of 1.2 squares
-        towers.add(new Tower(this,new Bullet(this,new ImageIcon("Textures/Bullets/Bullet1.png"),1,10),new ImageIcon("Textures/Towers/Tower1.png"),x,y,50,(int)(1.5*SQUARESIZE)));
+        towers.add(new CircleTower(this,x,y));
 
     }
 
@@ -256,7 +256,7 @@ public class Gameboard extends JPanel
            for (int i = 0; i < enemies.size(); i++) {
                //if it is dead it removes it from the map and gives coins to the player for destroying the enemy
                if (enemies.get(i).isDead()) {
-                   towerboard.setCoin(towerboard.getCoin()+enemies.get(i).getLevel() * 25);
+                   towerboard.setCoin(towerboard.getCoin()+(enemies.get(i).getLevel()+1) * 25);
                    enemies.remove(i);
                    //tells the game that there is one less enemy
                    numEnemies--;

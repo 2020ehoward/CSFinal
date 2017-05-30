@@ -6,19 +6,16 @@ import java.util.*;
 /**
  * Created by evanphoward on 5/16/17.
  */
-public class Tower {
-    private LinkedList<Enemy> enemies;
+public abstract class Tower {
+    private LinkedList<Bullet> bullets;
     private Gameboard parentBoard;
     private Bullet myBullet;
-    private LinkedList<Bullet> bullets;
     private ImageIcon myTexture;
-    private int x,y,speed,range,cooldown,distance;
+    private int x,y,speed,range,distance;
 
     public Tower(Gameboard g, Bullet myBullet, ImageIcon myTexture, int x, int y, int speed,int range) {
-        this.bullets = new LinkedList<>();
         this.range = range;
         this.speed = speed;
-        this.cooldown=0;
         this.parentBoard = g;
         this.myBullet = myBullet;
         this.myTexture = new ImageIcon(new ImageIcon(myTexture.getImage()).getImage().getScaledInstance(Gameboard.SQUARESIZE,Gameboard.SQUARESIZE,java.awt.Image.SCALE_SMOOTH));
@@ -26,7 +23,7 @@ public class Tower {
         this.y = y;
     }
 
-    public int getClosestEnemy() {
+    public int getClosestEnemy(LinkedList<Enemy> enemies) {
         if(enemies.size()!=0) {
             this.distance = Integer.MAX_VALUE;
             int closest = 0;
@@ -46,34 +43,48 @@ public class Tower {
             return -1;
     }
 
+    public abstract void tick();
 
-
-    public void tick() {
-        for(Bullet b : bullets) {
-            b.tick();
-            if(b.isGone())
-                bullets.remove(b);
-        }
-        enemies = parentBoard.getEnemies();
-        if(cooldown==0) {
-            if(getClosestEnemy()!=-1) {
-                bullets.add(new Bullet(myBullet,(x)+(myTexture.getIconWidth()/4),(y)+(myTexture.getIconHeight()/4)));
-                bullets.getLast().fireAt(enemies.get(getClosestEnemy()),distance,range);
-                if(bullets.getLast().isGone())
-                    bullets.removeLast();
-                cooldown = speed;
-            }
-        }
-        if(cooldown>0)
-            cooldown--;
-    }
+    public abstract void endRound();
 
     public Rectangle getBounds() {
         return new Rectangle(x,y,myTexture.getIconWidth(),myTexture.getIconHeight());
     }
 
-    public void endRound() {
-        bullets.clear();
+    public Gameboard getParentBoard() {
+        return parentBoard;
+    }
+
+    public Bullet getMyBullet() {
+        return myBullet;
+    }
+
+    public ImageIcon getMyTexture() {
+        return myTexture;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setBullets(LinkedList<Bullet> bullets) {
+        this.bullets = bullets;
     }
 
     public void draw(Graphics g) {

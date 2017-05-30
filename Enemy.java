@@ -29,6 +29,7 @@ private ImageIcon texture;
         this.direction = e.getDirection();
         this.isEscaping = e.isEscaping();
         this.isEscaped = e.isEscaped();
+        this.texture = e.getTexture();
     }
 
     public Enemy(Gameboard g, int level, int speed, ImageIcon texture) {
