@@ -24,10 +24,10 @@ public class Bullet {
         this.damage = b.getDamage();
     }
 
-    public Bullet(Gameboard g, ImageIcon myTexture, int damage, int speed) {
+    public Bullet(Gameboard g, ImageIcon myTexture, int damage, int speed,int size) {
         this.speed = speed;
         this.g = g;
-        this.myTexture = new ImageIcon(myTexture.getImage().getScaledInstance(Gameboard.SQUARESIZE/2,Gameboard.SQUARESIZE/2,Image.SCALE_SMOOTH));
+        this.myTexture = new ImageIcon(myTexture.getImage().getScaledInstance(size,size,Image.SCALE_SMOOTH));
         this.damage = damage;
     }
 

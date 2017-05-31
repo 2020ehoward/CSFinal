@@ -10,7 +10,7 @@ public class Towerboard extends JPanel
 {
     //info booleans are used to keep track of when to display info about the tower (price, brief description)
     //spawn booleans are used to tell the gameboard when the player has pressed a button and is buying a tower
-    private boolean infoBasic,spawnBasic,infoCircle,spawnCircle;
+    private boolean[] info,spawn;
     //the jbuttons that correspond to each tower and allow the player to purchase them
    private JButton[] towers;
    //coin label displays number of coins, infolabel contains information about the tower that the player is hovering over
@@ -20,7 +20,12 @@ public class Towerboard extends JPanel
    public Towerboard()
    {
        //all booleans start as false, because no info is displayed and nothing is being spawned
-       spawnBasic=infoBasic=infoCircle=spawnCircle=false;
+       info = new boolean[6];
+       spawn = new boolean[6];
+       for(int i=0;i<info.length;i++) {
+           info[i] = false;
+           spawn[i] = false;
+       }
        //player starts with 650 coins
        coin = 650;
 
@@ -87,6 +92,7 @@ public class Towerboard extends JPanel
           //basic and circle tower are enabled by default because the player starts with enough money to purchase them
         towers[0].setEnabled(true);
           towers[1].setEnabled(true);
+          towers[2].setEnabled(true);
 
           //the cancel button is a normal jbutton with an action listener
          JButton cancel = new JButton("Cancel");
@@ -135,22 +141,12 @@ public class Towerboard extends JPanel
 
        //if the mouse is in the button, it turns the corresponding info boolean to true
        public void mouseEntered(MouseEvent mouseEvent) {
-        switch(myTower) {
-            case 0: infoBasic=true;
-            break;
-            case 1: infoCircle=true;
-            break;
-        }
+           info[myTower]=true;
        }
 
        //if it leaves the button, it turns the corresponding info boolean to false
        public void mouseExited(MouseEvent mouseEvent) {
-        switch(myTower) {
-            case 0: infoBasic=false;
-            break;
-            case 1: infoCircle=false;
-            break;
-        }
+           info[myTower]=false;
        }
    }
 
@@ -163,22 +159,13 @@ public class Towerboard extends JPanel
         }
         //when clicked it turns the corresponding spawn boolean to true
         public void actionPerformed(ActionEvent e) {
-            switch(myTower) {
-                case 0: spawnBasic=true;
-                break;
-                case 1: spawnCircle=true;
-                break;
-            }
+            spawn[myTower]=true;
         }
         }
 
         //returns the spawn boolean for the number tower asked for
         public boolean getSpawn(int x) {
-       switch(x) {
-           case 0: return spawnBasic;
-           case 1: return spawnCircle;
-           default: return false;
-       }
+       return spawn[x];
         }
 
         //returns number of coins
@@ -198,29 +185,29 @@ public class Towerboard extends JPanel
             towers[1].setEnabled(true);
         else
             towers[1].setEnabled(false);
+        if(coin >=350)
+            towers[2].setEnabled(true);
+        else
+            towers[2].setEnabled(false);
     }
 
     //sets the specified spawn boolean to false
     public void setSpawn(int x) {
-       switch(x) {
-           case 0: spawnBasic = false;
-           break;
-           case 1: spawnCircle = false;
-           break;
-       }
-
+        spawn[x] = false;
+    }
 
 
        //the tick/update method
-        }
-   public void update() {
+        public void update() {
        //checks if any info booleans are true
        //if there are, changes the test to the applicable info, if none are true it sets it to blank
-       if(infoBasic) {
+       if(info[0]) {
            infoLabel.setText("<html><center>200 Coins<br>Spaghetti & Meatballs<br>A standard tower that shoots moderately fast</center></html>");
        }
-       else if(infoCircle)
+       else if(info[1])
            infoLabel.setText("<html><center>360 Coins<br>Pepperoni Pizza<br>A slow tower that shoots in a circle</center></html>");
+       else if(info[2])
+           infoLabel.setText("<html><center>350 Coins<br>Italian Sub<br>Futuristic sandwich tech allows this sub to shoot with infinite range</center></html>");
        else
            infoLabel.setText("");
        //updates the number of coins

@@ -11,16 +11,17 @@ public class CircleTower extends Tower {
     private int cooldown;
 
     public CircleTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet1.png"),1,5),new ImageIcon("Textures/Towers/Tower1.png"),x,y,50,(int)(1.9*Gameboard.SQUARESIZE));
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet1.png"),1,5,20),new ImageIcon("Textures/Towers/Tower1.png"),x,y,80,(int)(1.6*Gameboard.SQUARESIZE));
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
 
     public void endRound() {
         bullets.clear();
+        cooldown=0;
     }
     public void tick() {
-        if(cooldown==getSpeed()-20)
+        if(cooldown==getSpeed()-25)
             bullets.clear();
         for(int i=0;i<bullets.size();i++) {
             bullets.get(i).tick();
@@ -35,23 +36,23 @@ public class CircleTower extends Tower {
                 switch(i) {
                     case 0: bullets.getLast().setDy(bullets.getLast().getSpeed()*-1);
                     break;
-                    case 1: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*0.5));
-                    bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*-0.5));
+                    case 1: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*0.8));
+                    bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*-0.8));
                     break;
                     case 2: bullets.getLast().setDx(bullets.getLast().getSpeed());
                     break;
-                    case 3: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*0.5));
-                        bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*0.5));
+                    case 3: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*0.8));
+                        bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*0.8));
                         break;
                     case 4: bullets.getLast().setDy(bullets.getLast().getSpeed());
                     break;
-                    case 5: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*-0.5));
-                        bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*0.5));
+                    case 5: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*-0.8));
+                        bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*0.8));
                         break;
                     case 6: bullets.getLast().setDx(bullets.getLast().getSpeed()*-1);
                       break;
-                    case 7: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*-0.5));
-                        bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*-0.5));
+                    case 7: bullets.getLast().setDx((int)(bullets.getLast().getSpeed()*-0.8));
+                        bullets.getLast().setDy((int)(bullets.getLast().getSpeed()*-0.8));
                     break;
                 }
             }

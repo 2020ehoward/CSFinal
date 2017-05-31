@@ -151,6 +151,10 @@ public class Gameboard extends JPanel
 
     }
 
+    public void spawnSniperTower(int x,int y) {
+       towers.add(new SniperTower(this,x,y));
+    }
+
     //returns the list of enemies, used by towers and bullets to know where to shoot
     public LinkedList<Enemy> getEnemies() {
         return enemies;
@@ -200,6 +204,11 @@ public class Gameboard extends JPanel
                                             spawnCircleTower(x,y);
                                             towerboard.setSpawn(1);
                                             break;
+                                        case 2:
+                                            towerboard.setCoin(towerboard.getCoin()-350);
+                                            spawnSniperTower(x,y);
+                                            towerboard.setSpawn(2);
+                                            break;
                                     }
                 }
         }
@@ -213,22 +222,22 @@ public class Gameboard extends JPanel
 
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-            towerX=map(mouseEvent.getX(),SQUARESIZE/2,(parentFrame.getWidth()-84)-SQUARESIZE/2,0,800);
-            towerY=map(mouseEvent.getY(),0,parentFrame.getHeight()-84,0,800)-SQUARESIZE/2;
+            towerX=map(mouseEvent.getX(),SQUARESIZE/2,(parentFrame.getWidth()-84)-SQUARESIZE/2);
+            towerY=map(mouseEvent.getY(),0,parentFrame.getHeight()-84)-SQUARESIZE/2;
         }
 
         @Override
         public void mouseMoved(MouseEvent mouseEvent) {
-            towerX=map(mouseEvent.getX(),SQUARESIZE/2,(parentFrame.getWidth()-84)-SQUARESIZE/2,0,800);
-            towerY=map(mouseEvent.getY(),0,parentFrame.getHeight()-84,0,800)-SQUARESIZE/2;
+            towerX=map(mouseEvent.getX(),SQUARESIZE/2,(parentFrame.getWidth()-84)-SQUARESIZE/2);
+            towerY=map(mouseEvent.getY(),0,parentFrame.getHeight()-84)-SQUARESIZE/2;
         }
     }
 
     //used to map the mouse coordinates onto the buffered image coordinates
-    public int map(int in, int in_min,int in_max,int out_min, int out_max) {
+    public int map(int in, int in_min,int in_max) {
        //maps a given value from one range to another
         //Ex: map(1,0,2,0,4) returns 2 since it is in the middle of 0 and 4
-        return (in - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        return (in - in_min) * (800) / (in_max - in_min);
     }
 
     //runs every few milliseconds to update everything that has changed
@@ -317,10 +326,12 @@ public class Gameboard extends JPanel
                         myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower0.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
                         break;
                     case 1:
-                        myBuffer.fillOval((towerX + SQUARESIZE / 2) - (int)(1.2*SQUARESIZE), (towerY + SQUARESIZE / 2) - (int)(1.2 *SQUARESIZE), (int)(2.4 * SQUARESIZE), (int)(2.4 * SQUARESIZE));
+                        myBuffer.fillOval((towerX + SQUARESIZE / 2) - (int)(1.6*SQUARESIZE), (towerY + SQUARESIZE / 2) - (int)(1.6 *SQUARESIZE), (int)(3.2 * SQUARESIZE), (int)(3.2 * SQUARESIZE));
                         myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower1.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
                         break;
-
+                    case 2:
+                        myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower2.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
+                        break;
                 }
             }
         }
