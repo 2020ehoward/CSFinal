@@ -1,3 +1,6 @@
+package Towers;
+
+import Main.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -5,17 +8,16 @@ import java.util.LinkedList;
 /**
  * Created by evanphoward on 5/30/17.
  */
-public class SniperTower extends Tower {
+public class BasicTower extends Tower {
     private LinkedList<Bullet> bullets;
     private LinkedList<Enemy> enemies;
     private int cooldown;
 
-    public SniperTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet2.png"),1,15,30),new ImageIcon("Textures/Towers/Tower2.png"),x,y,200,Gameboard.IMAGEWIDTH);
+    public BasicTower(Gameboard g, int x, int y) {
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10,45),new ImageIcon("Textures/Towers/Tower0.png"),x,y,50,3* Gameboard.SQUARESIZE);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
-
     public void tick() {
         for(Bullet b : bullets) {
             b.tick();
@@ -38,7 +40,7 @@ public class SniperTower extends Tower {
 
     public void endRound() {
         bullets.clear();
-        cooldown=0;
+        cooldown=getSpeed();
     }
 
     public void draw(Graphics g) {

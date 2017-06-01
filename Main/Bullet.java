@@ -1,7 +1,7 @@
+package Main;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.util.LinkedList;
 
 /**
  * Created by evanphoward on 5/20/17.

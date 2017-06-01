@@ -1,3 +1,6 @@
+package Towers;
+
+import Main.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -11,14 +14,14 @@ public class CircleTower extends Tower {
     private int cooldown;
 
     public CircleTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet1.png"),1,5,20),new ImageIcon("Textures/Towers/Tower1.png"),x,y,80,(int)(1.6*Gameboard.SQUARESIZE));
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet1.png"),1,5,20),new ImageIcon("Textures/Towers/Tower1.png"),x,y,80,(int)(1.6* Gameboard.SQUARESIZE));
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
 
     public void endRound() {
         bullets.clear();
-        cooldown=0;
+        cooldown=getSpeed();
     }
     public void tick() {
         if(cooldown==getSpeed()-25)

@@ -1,3 +1,5 @@
+package Main;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,11 +14,11 @@ public class Enemy {
     public static final int WEST = 3;
 
     //booleans to keep track if it is dead, escaped the map, or on the final square (escaping)
-    private boolean isDead,isEscaped,isEscaping;
+    private boolean isDead,isEscaped,isEscaping,isFrozen;
     //x and y are the location
     //direction is which way it is currently moving
     //speed is how many pixels it moves every tick
-private int x,y,direction,speed,level;
+private int x,y,direction,speed,level,freezetimer;
 //the texture it uses
 private ImageIcon texture;
 
@@ -30,6 +32,7 @@ private ImageIcon texture;
         this.isEscaping = e.isEscaping();
         this.isEscaped = e.isEscaped();
         this.texture = e.getTexture();
+        this.freezetimer = e.getFreezetimer();
     }
 
     public Enemy(Gameboard g, int level, int speed, ImageIcon texture) {
@@ -96,79 +99,93 @@ private ImageIcon texture;
         this.texture = texture;
         //it starts out alive
         isDead = false;
+        freezetimer = 0;
+    }
+
+    public void freeze(int length) {
+        if(freezetimer==0) {
+            isFrozen=true;
+            freezetimer = length;
+        }
     }
 
     //method that runs every tick of the game
     public void tick() {
         //if it has reached level zero, it has been killed
-        if(level==0)
+        if (level == 0)
             isDead = true;
 
         //if it is outside the map, it has escaped
-        if(x<0-texture.getIconWidth() || x>Gameboard.IMAGEWIDTH || y<0-texture.getIconHeight() || y>Gameboard.IMAGEWIDTH)
+        if (x < 0 - texture.getIconWidth() || x > Gameboard.IMAGEWIDTH || y < 0 - texture.getIconHeight() || y > Gameboard.IMAGEWIDTH)
             isEscaped = true;
 
         //if it hasn't escaped yet
-        if(!isEscaped)
+        if (!isEscaped)
             //and it is in the exit square
-        if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE]==3)
-            //it is in the process of escaping
-            isEscaping=true;
+            if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE] == 3)
+                //it is in the process of escaping
+                isEscaping = true;
 
-        //if it isn't in the exit square
-        if(!isEscaping)
-            //switch the direction it is going
-        switch(direction) {
-            //if it is going north
-            case 0:
-                //if the current s
-                if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE-1][x/Gameboard.SQUARESIZE]==1)
-                    if(Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0 || Gameboard.map[(y+40)/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==3)
-                        direction=EAST;
-                    else
-                        direction=WEST;
-                y -= speed;
-                break;
-            case 1:
-                if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==1)
-                    if(Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE]==0 || Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE] == 3)
-                        direction=SOUTH;
-                    else
-                        direction=NORTH;
-                x += speed;
-                break;
-            case 2:
-                if(Gameboard.map[y/Gameboard.SQUARESIZE+1][x/Gameboard.SQUARESIZE]==1)
-                    if(Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1]==0 || Gameboard.map[y/Gameboard.SQUARESIZE][x/Gameboard.SQUARESIZE+1] == 3)
-                        direction=EAST;
-                    else
-                        direction=WEST;
-                y += speed;
-                break;
-            case 3:
-                if(Gameboard.map[y/Gameboard.SQUARESIZE][(x+40)/Gameboard.SQUARESIZE-1]==1)
-                    if(Gameboard.map[y/Gameboard.SQUARESIZE+1][(x+40)/Gameboard.SQUARESIZE]==0 || Gameboard.map[y/Gameboard.SQUARESIZE+1][(x+40)/Gameboard.SQUARESIZE]==3)
-                        direction=SOUTH;
-                    else
-                        direction=NORTH;
-                x -= speed;
-                break;
+        if (freezetimer == 0) {
+            isFrozen=false;
+            //if it isn't in the exit square
+            if (!isEscaping)
+                //switch the direction it is going
+                switch (direction) {
+                    //if it is going north
+                    case 0:
+                        //if the current s
+                        if (Gameboard.map[(y + 40) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 1)
+                            if (Gameboard.map[(y + 40) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[(y + 40) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
+                                direction = EAST;
+                            else
+                                direction = WEST;
+                        y -= speed;
+                        break;
+                    case 1:
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 1)
+                            if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 3)
+                                direction = SOUTH;
+                            else
+                                direction = NORTH;
+                        x += speed;
+                        break;
+                    case 2:
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 1)
+                            if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
+                                direction = EAST;
+                            else
+                                direction = WEST;
+                        y += speed;
+                        break;
+                    case 3:
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE][(x + 40) / Gameboard.SQUARESIZE - 1] == 1)
+                            if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + 40) / Gameboard.SQUARESIZE] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + 40) / Gameboard.SQUARESIZE] == 3)
+                                direction = SOUTH;
+                            else
+                                direction = NORTH;
+                        x -= speed;
+                        break;
+                }
+            else
+                switch (direction) {
+                    case 0:
+                        y -= speed;
+                        break;
+                    case 1:
+                        x += speed;
+                        break;
+                    case 2:
+                        y += speed;
+                        break;
+                    case 3:
+                        x -= speed;
+                        break;
+                }
         }
-        else
-            switch(direction) {
-                case 0:
-                    y-=speed;
-                    break;
-                case 1:
-                    x+=speed;
-                    break;
-                case 2:
-                    y+=speed;
-                    break;
-                case 3:
-                    x-=speed;
-                    break;
-            }
+        else {
+            freezetimer--;
+        }
     }
 
     public int getX() {
@@ -218,6 +235,10 @@ private ImageIcon texture;
     public ImageIcon getTexture() {
         return texture;
     }
+
+    public int getFreezetimer() { return freezetimer; }
+
+    public boolean isFrozen() { return isFrozen; }
 
     public void draw(Graphics g) {
         g.drawImage(texture.getImage(),x,y,null);

@@ -1,4 +1,6 @@
+package Towers;
 
+import Main.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -13,14 +15,15 @@ public abstract class Tower {
     private ImageIcon myTexture;
     private int x,y,speed,range,distance;
 
-    public Tower(Gameboard g, Bullet myBullet, ImageIcon myTexture, int x, int y, int speed,int range) {
+    public Tower(Gameboard g, Bullet myBullet, ImageIcon myTexture, int x, int y, int speed, int range) {
         this.range = range;
         this.speed = speed;
         this.parentBoard = g;
         this.myBullet = myBullet;
-        this.myTexture = new ImageIcon(new ImageIcon(myTexture.getImage()).getImage().getScaledInstance(Gameboard.SQUARESIZE,Gameboard.SQUARESIZE,java.awt.Image.SCALE_SMOOTH));
+        this.myTexture = new ImageIcon(new ImageIcon(myTexture.getImage()).getImage().getScaledInstance(Gameboard.SQUARESIZE, Gameboard.SQUARESIZE,java.awt.Image.SCALE_SMOOTH));
         this.x = x;
         this.y = y;
+        bullets= new LinkedList<>();
     }
 
     public int getClosestEnemy(LinkedList<Enemy> enemies) {
@@ -29,12 +32,12 @@ public abstract class Tower {
             int closest = 0;
             for (int i=0;i<enemies.size();i++) {
                 double dist = Math.sqrt(Math.pow(x - enemies.get(i).getX(),2)+Math.pow( y - enemies.get(i).getY(),2));
-                if (dist < this.distance && dist < range+Gameboard.SQUARESIZE) {
+                if (dist < this.distance && dist < range+ Gameboard.SQUARESIZE) {
                     this.distance = (int)dist;
                     closest = i;
                 }
             }
-            if(distance<range+Gameboard.SQUARESIZE)
+            if(distance<range+ Gameboard.SQUARESIZE)
             return closest;
             else
                 return -1;
