@@ -51,7 +51,6 @@ public class Bullet {
         for(Enemy e : g.getEnemies()) {
             if(getBounds().intersects(e.getBounds())) {
                 e.removeHealth(damage);
-                e.setDead(true);
                 isGone = true;
             }
         }

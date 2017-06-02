@@ -47,7 +47,7 @@ public class Gameboard extends JPanel
     //the enemy counters are used to spawn the enemies, the bigger it is the more it spawns
     //tower x and y are the location of the "fake" tower when you are placing on in before buying it
     //numEnemies is the total number of enemies on the board
-    private int bEnemyCounter,towerX,towerY,numEnemies;
+    private int enemyCounter,enemyInterval,towerX,towerY,numEnemies;
 
     //Copies of the tower and scoreboard from the mainpanel, as well as the parent JFrame
     private Towerboard towerboard;
@@ -61,6 +61,7 @@ public class Gameboard extends JPanel
     //the two lists of the enemies on the screen and the towers on the screen
     private LinkedList<Enemy> enemies;
     private LinkedList<Tower> towers;
+    private LinkedList<Integer> round;
     //Requires a copy of the parent JFrame, the scoreboard, and the towerboard so it can interact with them directly
    public Gameboard(JFrame parentFrame, Scoreboard scoreboard,Towerboard towerboard)
    {
@@ -71,9 +72,10 @@ public class Gameboard extends JPanel
        //the game starts not in a round
        isRound=false;
        //there are no enemies or towers on the screen it starts, so the counters are 0 and the lists are empty
-       bEnemyCounter=numEnemies=0;
+       enemyInterval=enemyCounter=numEnemies=0;
        towers = new LinkedList<>();
        enemies = new LinkedList<>();
+       round = new LinkedList<>();
 
        //sets the graphics object to the graphics of the buffered image
        myBuffer = myImage.getGraphics();
@@ -128,16 +130,15 @@ public class Gameboard extends JPanel
     }
 
     public void nextRound() {
-       //TODO inplement actual round with balanced spawning. New class to store every round?
-        bEnemyCounter=scoreboard.getRound()*20;
-        numEnemies=scoreboard.getRound()+1;
-
+       round = Round.getRound(scoreboard.getRound()+1);
+       enemyInterval=round.pollFirst();
+        enemyCounter=0;
     }
 
-    public void spawnBasicEnemy() {
+    public void spawnEnemy(int level) {
        //adds an enemy with the traits of a basic enemy to the list, spawning into the game
         //it has 1 healt, a speed of 5, and the basic enemy texture scaled to 8/10 of a square
-       enemies.add(new Enemy(this,1,5,new ImageIcon(new ImageIcon("Textures/Enemies/enemy1.png").getImage().getScaledInstance((int)(Gameboard.SQUARESIZE*0.8),(int)(SQUARESIZE*0.8),Image.SCALE_SMOOTH))));
+       enemies.add(new Enemy(this,level));
     }
 
     public  void spawnBasicTower(int x,int y) {
@@ -267,22 +268,26 @@ public class Gameboard extends JPanel
                isRound = true;
            }
 
-           //TODO make this work with the round system by probably making a new variable to change the intervals of spawning
-           if (bEnemyCounter % 20 == 0)
-               spawnBasicEnemy();
+           if (enemyCounter % enemyInterval == 0 && !round.isEmpty()) {
+               spawnEnemy(round.pollFirst());
+               numEnemies++;
+               if(!round.isEmpty())
+               if(!(round.getFirst()==1 || round.getFirst()==2 || round.getFirst()==3 || round.getFirst()==4))
+               enemyInterval=round.pollFirst();
+           }
 
            //goes through the enemies list
            for (int i = 0; i < enemies.size(); i++) {
                //if it is dead it removes it from the map and gives coins to the player for destroying the enemy
                if (enemies.get(i).isDead()) {
-                   towerboard.setCoin(towerboard.getCoin()+(enemies.get(i).getLevel()+1) * 25);
+                   towerboard.setCoin(towerboard.getCoin()+(enemies.get(i).getLevel()));
                    enemies.remove(i);
                    //tells the game that there is one less enemy
                    numEnemies--;
                    //if it has escaped it removes it from the map, loses a life, and tells the game there is one less enemy
                } else if (enemies.get(i).isEscaped()) {
+                   scoreboard.loseLife(enemies.get(i).getLevel());
                    enemies.remove(i);
-                   scoreboard.loseLife();
                    numEnemies--;
                }
            }
@@ -308,8 +313,8 @@ public class Gameboard extends JPanel
                t.tick();
            }
 
-           if(bEnemyCounter>=0)
-               bEnemyCounter--;
+           if(!round.isEmpty())
+               enemyCounter++;
        }
 
        //draws all enemies

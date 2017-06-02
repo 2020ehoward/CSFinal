@@ -55,8 +55,8 @@ public class Scoreboard extends JPanel
       setBackground(BACKGROUND);
    }
 
-    public void loseLife() {
-        this.life--;
+    public void loseLife(int damage) {
+        this.life-=damage;
     }
 
     public int getLife() {

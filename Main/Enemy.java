@@ -35,10 +35,12 @@ private ImageIcon texture;
         this.freezetimer = e.getFreezetimer();
     }
 
-    public Enemy(Gameboard g, int level, int speed, ImageIcon texture) {
+    public Enemy(Gameboard g, int level) {
         //the enemy starts at the x and y values of the entrance of the map
         this.y = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
         this.x = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
+
+        this.texture = new ImageIcon("Textures/Enemies/enemy"+level+".png");
 
         //it checks which direction from the entrance is a path, that directions is the direction in which the enemy will move
         //if that square is outside of the array, it obviously can't be that direction, so it catches the exception and moves on
@@ -66,28 +68,28 @@ private ImageIcon texture;
         //if it is on the left side
         if(x<=30) {
             //it decreases the x by the width of the image, making it off the screen
-            x-=texture.getIconWidth();
+            x-=texture.getIconWidth()-1;
             //randomly varies the y-value on the entrance
-            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-20));
+            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-(int)((Gameboard.SQUARESIZE-texture.getIconHeight())*0.8)));
         }
         //if it is on the right
         else if(x>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             //put it off the screen
-            x+=Gameboard.SQUARESIZE;
+            x+=Gameboard.SQUARESIZE-1;
             //vary the y-value across the entrance
             y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
         }
         //if it is on the top
         else if(y<=30) {
             //off the screen
-            y-=texture.getIconHeight();
+            y-=texture.getIconHeight()-1;
             //random x-value
             x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
         }
         //bottom of the screen
         else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             //off the screen
-            y+=Gameboard.SQUARESIZE;
+            y+=Gameboard.SQUARESIZE-1;
             //random x-value
             x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
         }
@@ -95,8 +97,7 @@ private ImageIcon texture;
 
         //level,speed, and texture are all specified by the constructor
         this.level = level;
-        this.speed = speed;
-        this.texture = texture;
+        setSpeed();
         //it starts out alive
         isDead = false;
         freezetimer = 0;
@@ -109,18 +110,31 @@ private ImageIcon texture;
         }
     }
 
+    public void setSpeed() {
+        switch(level) {
+            case 1: speed=5;
+                break;
+            case 2: speed=7;
+                break;
+            case 3: speed=10;
+                break;
+            case 4: speed=15;
+                break;
+        }
+    }
+
     //method that runs every tick of the game
     public void tick() {
-        //if it has reached level zero, it has been killed
-        if (level == 0)
-            isDead = true;
+
+        texture=new ImageIcon("Textures/Enemies/enemy"+level+".png");
+        setSpeed();
 
         //if it is outside the map, it has escaped
         if (x < 0 - texture.getIconWidth() || x > Gameboard.IMAGEWIDTH || y < 0 - texture.getIconHeight() || y > Gameboard.IMAGEWIDTH)
             isEscaped = true;
 
         //if it hasn't escaped yet
-        if (!isEscaped)
+        if (!isEscaped && !isEscaping)
             //and it is in the exit square
             if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE] == 3)
                 //it is in the process of escaping
@@ -209,6 +223,9 @@ private ImageIcon texture;
     }
 
     public void removeHealth(int damage) {
+        if(level-damage<1)
+            isDead=true;
+        else
         this.level-=damage;
     }
 
