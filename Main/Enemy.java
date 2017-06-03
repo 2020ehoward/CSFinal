@@ -114,11 +114,11 @@ private ImageIcon texture;
         switch(level) {
             case 1: speed=5;
                 break;
-            case 2: speed=7;
+            case 2: speed=6;
                 break;
-            case 3: speed=10;
+            case 3: speed=8;
                 break;
-            case 4: speed=15;
+            case 4: speed=10;
                 break;
         }
     }

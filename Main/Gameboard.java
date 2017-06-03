@@ -131,6 +131,7 @@ public class Gameboard extends JPanel
 
     public void nextRound() {
        round = Round.getRound(scoreboard.getRound()+1);
+       round.removeFirst();
        enemyInterval=round.pollFirst();
         enemyCounter=0;
     }
@@ -271,9 +272,11 @@ public class Gameboard extends JPanel
            if (enemyCounter % enemyInterval == 0 && !round.isEmpty()) {
                spawnEnemy(round.pollFirst());
                numEnemies++;
-               if(!round.isEmpty())
-               if(!(round.getFirst()==1 || round.getFirst()==2 || round.getFirst()==3 || round.getFirst()==4))
-               enemyInterval=round.pollFirst();
+               if(!round.isEmpty() && !(round.size()==1))
+               if(round.getFirst()==-1) {
+                   round.removeFirst();
+                   enemyInterval = round.pollFirst();
+               }
            }
 
            //goes through the enemies list
@@ -293,7 +296,7 @@ public class Gameboard extends JPanel
            }
 
            //if there are no enemies left and it is in a round
-           if (numEnemies==0 && isRound) {
+           if (numEnemies==0 && isRound && round.isEmpty()) {
                //ends the round
                isRound = false;
                //pauses the game
@@ -301,6 +304,7 @@ public class Gameboard extends JPanel
                //goes through all the towers and tells them the round is over
                for (Tower t : towers)
                    t.endRound();
+               towerboard.setCoin(towerboard.getCoin()+100+scoreboard.getRound());
            }
 
            //calls the tick method for all enemies, updating them

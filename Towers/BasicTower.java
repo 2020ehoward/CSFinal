@@ -14,7 +14,7 @@ public class BasicTower extends Tower {
     private int cooldown;
 
     public BasicTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10,45),new ImageIcon("Textures/Towers/Tower0.png"),x,y,50,3* Gameboard.SQUARESIZE);
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10,45),new ImageIcon("Textures/Towers/Tower0.png"),x,y,40,3* Gameboard.SQUARESIZE);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }

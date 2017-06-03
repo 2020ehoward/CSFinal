@@ -174,19 +174,15 @@ public class Towerboard extends JPanel
     public void setCoin(int coin) {
         this.coin = coin;
         //goes through all the towers, if the player has enough coins it is enabled, if not it is disabled
-        if(coin>=380) {
-            towers[0].setEnabled(true);
-            towers[1].setEnabled(true);
-            towers[2].setEnabled(true);
-            towers[3].setEnabled(true);
-        }
-        if(coin<380)
+        for(int i=0;i<towers.length;i++)
+            towers[i].setEnabled(true);
+        if(this.coin<380)
             towers[3].setEnabled(false);
-        if(coin<360)
+        if(this.coin<360)
             towers[1].setEnabled(false);
-        if(coin<350)
+        if(this.coin<350)
             towers[2].setEnabled(false);
-        if(coin<200)
+        if(this.coin<200)
             towers[0].setEnabled(false);
     }
 
