@@ -14,7 +14,7 @@ public class CircleTower extends Tower {
     private int cooldown;
 
     public CircleTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet1.png"),1,5,20),new ImageIcon("Textures/Towers/Tower1.png"),x,y,80,(int)(1.6* Gameboard.SQUARESIZE));
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet1.png"),1,5,20),new ImageIcon("Textures/Towers/Tower1.png"),x,y,70,(int)(1.6* Gameboard.SQUARESIZE));
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }

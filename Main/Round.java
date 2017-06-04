@@ -56,6 +56,32 @@ public class Round {
             addEnemy(1,10);
             setDelay(35);
             addEnemy(3,12);
+            case 9:
+                setDelay(25);
+                addEnemy(3,30);
+                break;
+            case 10:
+                setDelay(20);
+                addEnemy(2,102);
+                break;
+            case 11:
+                setDelay(30);
+                addEnemy(4,2);
+                setDelay(23);
+                addEnemy(3,12);
+                setDelay(20);
+                addEnemy(2,10);
+                setDelay(14);
+                addEnemy(1,10);
+                break;
+            case 12:
+                setDelay(25);
+                addEnemy(3,10);
+                setDelay(20);
+                addEnemy(2,15);
+                setDelay(30);
+                addEnemy(4,5);
+                break;
         }
         return round;
     }

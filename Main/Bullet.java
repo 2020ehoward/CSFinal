@@ -49,7 +49,7 @@ public class Bullet {
 
     public void hasHit() {
         for(Enemy e : g.getEnemies()) {
-            if(getBounds().intersects(e.getBounds())) {
+            if(getBounds().intersects(e.getBounds()) && !isGone) {
                 e.removeHealth(damage);
                 isGone = true;
             }
