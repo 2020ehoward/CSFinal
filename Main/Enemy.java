@@ -40,7 +40,7 @@ private ImageIcon texture;
         this.y = ((int)(g.getEntrance().getY())*Gameboard.SQUARESIZE);
         this.x = ((int)(g.getEntrance().getX())*Gameboard.SQUARESIZE);
 
-        this.texture = new ImageIcon("Textures/Enemies/enemy"+level+".png");
+        setTexture();
 
         //it checks which direction from the entrance is a path, that directions is the direction in which the enemy will move
         //if that square is outside of the array, it obviously can't be that direction, so it catches the exception and moves on
@@ -123,10 +123,24 @@ private ImageIcon texture;
         }
     }
 
+    public void setTexture() {
+        texture=new ImageIcon("Textures/Enemies/enemy"+level+".png");
+        switch(level) {
+            case 1: this.texture = new ImageIcon(texture.getImage().getScaledInstance((int)(Gameboard.SQUARESIZE*0.8),(int)(Gameboard.SQUARESIZE*0.8),Image.SCALE_SMOOTH));
+                break;
+            case 2: this.texture = new ImageIcon(texture.getImage().getScaledInstance((int)(Gameboard.SQUARESIZE*(13.0/15.0)),(int)(Gameboard.SQUARESIZE*(13.0/15.0)),Image.SCALE_SMOOTH));
+                break;
+            case 3: this.texture = new ImageIcon(texture.getImage().getScaledInstance((int)(Gameboard.SQUARESIZE*(14.0/15.0)),(int)(Gameboard.SQUARESIZE*(14.0/15.0)),Image.SCALE_SMOOTH));
+                break;
+            case 4: this.texture = new ImageIcon(texture.getImage().getScaledInstance(Gameboard.SQUARESIZE,Gameboard.SQUARESIZE,Image.SCALE_SMOOTH));
+                break;
+        }
+    }
+
     //method that runs every tick of the game
     public void tick() {
 
-        texture=new ImageIcon("Textures/Enemies/enemy"+level+".png");
+        setTexture();
         setSpeed();
 
         //if it is outside the map, it has escaped
@@ -149,8 +163,8 @@ private ImageIcon texture;
                     //if it is going north
                     case 0:
                         //if the current s
-                        if (Gameboard.map[(y + 40) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 1)
-                            if (Gameboard.map[(y + 40) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[(y + 40) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
+                        if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 1)
+                            if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
                                 direction = EAST;
                             else
                                 direction = WEST;
@@ -173,8 +187,8 @@ private ImageIcon texture;
                         y += speed;
                         break;
                     case 3:
-                        if (Gameboard.map[y / Gameboard.SQUARESIZE][(x + 40) / Gameboard.SQUARESIZE - 1] == 1)
-                            if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + 40) / Gameboard.SQUARESIZE] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + 40) / Gameboard.SQUARESIZE] == 3)
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1] == 1)
+                            if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE] == 3)
                                 direction = SOUTH;
                             else
                                 direction = NORTH;

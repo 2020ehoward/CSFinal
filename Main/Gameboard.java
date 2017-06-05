@@ -13,12 +13,6 @@ import java.util.LinkedList;
 public class Gameboard extends JPanel
 {
     //final variables
-    //WIDTH is the number of squares/tiles on the map
-    private static final int WIDTH = 13;
-    //IMAGEWIDTH is the width in pixels of the buffered image the gameboard uses
-    public static final int IMAGEWIDTH = 780;
-    //SQUARESIZE is the size of each square
-    public static final int SQUARESIZE = IMAGEWIDTH/WIDTH;
     //the map corresponds to the ingame map
     /*
     1 = Grass
@@ -27,20 +21,27 @@ public class Gameboard extends JPanel
     4 = Water
      */
     public static final int[][] map = {
-            {1,1,1,1,1,1,1,3,1,1,1,1,1,},
-            {1,1,0,0,0,0,0,0,1,1,1,4,1,},
-            {1,1,0,1,1,1,1,1,1,4,4,4,1,},
-            {1,1,0,1,1,1,1,1,1,1,4,4,1,},
-            {1,1,0,1,1,1,1,1,1,1,4,4,4,},
-            {1,1,0,1,0,0,0,0,0,1,1,1,1,},
-            {1,1,0,0,0,1,1,1,0,1,1,1,1,},
-            {1,1,1,1,1,1,1,1,0,0,0,0,1,},
-            {2,0,0,0,0,1,1,1,1,1,1,0,1,},
-            {1,1,1,1,0,1,1,4,4,1,1,0,1,},
-            {1,1,1,1,0,1,1,1,1,1,1,0,1,},
-            {1,1,1,1,0,0,0,0,0,0,0,0,1,},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,}
+            {1,1,1,1,1,1,1,3,1,1,1,1,1},
+            {1,1,0,0,0,0,0,0,1,1,1,4,1},
+            {1,1,0,1,1,1,1,1,1,4,4,4,1},
+            {1,1,0,1,1,1,1,1,1,1,4,4,1},
+            {1,1,0,1,1,1,1,1,1,1,4,4,4},
+            {1,1,0,1,0,0,0,0,0,1,1,1,1},
+            {1,1,0,0,0,1,1,1,0,1,1,1,1},
+            {1,1,1,1,1,1,1,1,0,0,0,0,1},
+            {2,0,0,0,0,1,1,1,1,1,1,0,1},
+            {1,1,1,1,0,1,1,4,4,1,1,0,1},
+            {1,1,1,1,0,1,1,1,1,1,1,0,1},
+            {1,1,1,1,0,0,0,0,0,0,0,0,1},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
+
+    //WIDTH is the number of squares/tiles on the map
+    private static final int WIDTH = map.length;
+    //IMAGEWIDTH is the width in pixels of the buffered image the gameboard uses
+    public static final int IMAGEWIDTH = 780;
+    //SQUARESIZE is the size of each square
+    public static final int SQUARESIZE = IMAGEWIDTH/WIDTH;
 
     //This is true if it is currently a round, false if it is before the game or between rounds
     private boolean isRound;
