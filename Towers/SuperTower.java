@@ -16,8 +16,8 @@ public class SuperTower extends Tower {
     private LinkedList<Enemy> enemies;
     private int cooldown;
 
-    public SuperTower(Gameboard g, int x,int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet5.png"),1,10,45),new ImageIcon("Textures/Towers/Tower5.png"),x,y,5,5* Gameboard.SQUARESIZE);
+    public SuperTower(Gameboard g, int x, int y) {
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet5.png"),1,15,45),new ImageIcon("Textures/Towers/Tower5.png"),x,y,5,5* Gameboard.SQUARESIZE);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }

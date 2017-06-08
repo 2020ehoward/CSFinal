@@ -27,7 +27,7 @@ public class Towerboard extends JPanel
            spawn[i] = false;
        }
        //player starts with 650 coins
-       coin = 650;
+       coin = 375;
 
        //border layout with margins of 10 pixels on the top, 5 on the left, and 5 on the right
       setLayout(new BorderLayout());

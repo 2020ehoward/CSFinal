@@ -15,7 +15,7 @@ public class SniperTower extends Tower {
     private int cooldown;
 
     public SniperTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet2.png"),1,15,30),new ImageIcon("Textures/Towers/Tower2.png"),x,y,120, Gameboard.IMAGEWIDTH);
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet2.png"),1,75,30),new ImageIcon("Textures/Towers/Tower2.png"),x,y,80, Gameboard.IMAGEWIDTH);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
