@@ -163,6 +163,8 @@ public class Gameboard extends JPanel
        towers.add(new SniperTower(this,x,y));
     }
 
+    public void spawnSuperTower(int x,int y) {towers.add(new SuperTower(this,x,y)); }
+
     //returns the list of enemies, used by towers and bullets to know where to shoot
     public LinkedList<Enemy> getEnemies() {
         return enemies;
@@ -221,6 +223,11 @@ public class Gameboard extends JPanel
                                             towerboard.setCoin(towerboard.getCoin()-380);
                                             spawnFreezeTower(x,y);
                                             towerboard.setSpawn(3);
+                                            break;
+                                        case 5:
+                                            towerboard.setCoin(towerboard.getCoin()-3500);
+                                            spawnSuperTower(x,y);
+                                            towerboard.setSpawn(5);
                                             break;
                                     }
                 }
@@ -356,7 +363,10 @@ public class Gameboard extends JPanel
                         myBuffer.fillOval((towerX + SQUARESIZE / 2) - 2*SQUARESIZE, (towerY + SQUARESIZE / 2) - 2 *SQUARESIZE, 4 * SQUARESIZE, 4 * SQUARESIZE);
                         myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower3.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
                     break;
-
+                    case 5:
+                        myBuffer.fillOval((towerX + SQUARESIZE / 2) - 5 * SQUARESIZE, (towerY + SQUARESIZE / 2) - 5 * SQUARESIZE, 10 * SQUARESIZE, 10 * SQUARESIZE);
+                        myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower5.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
+                    break;
                 }
             }
         }

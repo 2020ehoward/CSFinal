@@ -82,6 +82,40 @@ public class Round {
                 setDelay(30);
                 addEnemy(4,5);
                 break;
+            case 13:
+                for(int i=0;i<4;i++) {
+                    setDelay(12);
+                    addEnemy(1, 25);
+                    setDelay(30);
+                    addEnemy(3,1);
+                    addEnemy(2,5);
+                }
+                addEnemy(2,3);
+                break;
+            case 14:
+                setDelay(20);
+                addEnemy(1,10);
+                addEnemy(2,10);
+                addEnemy(1,10);
+                addEnemy(3,15);
+                addEnemy(1,10);
+                addEnemy(4,9);
+                addEnemy(1,20);
+                break;
+            case 15:
+                setDelay(12);
+                addEnemy(4,20);
+                break;
+            case 16:
+                setDelay(12);
+                addEnemy(2,10);
+                setDelay(30);
+                addEnemy(3,5);
+                setDelay(12);
+                addEnemy(2,10);
+                setDelay(30);
+                addEnemy(4,5);
+                break;
         }
         return round;
     }

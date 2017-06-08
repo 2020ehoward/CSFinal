@@ -176,6 +176,8 @@ public class Towerboard extends JPanel
         //goes through all the towers, if the player has enough coins it is enabled, if not it is disabled
         for(int i=0;i<towers.length;i++)
             towers[i].setEnabled(true);
+        if(this.coin<3500)
+            towers[5].setEnabled(false);
         if(this.coin<380)
             towers[3].setEnabled(false);
         if(this.coin<360)
@@ -205,6 +207,10 @@ public class Towerboard extends JPanel
            infoLabel.setText("<html><center>350 Coins<br>Italian Sub<br>Futuristic sandwich tech allows this sub to shoot with infinite range</center></html>");
        else if(info[3])
            infoLabel.setText("<html><center>380 Coins<br>Italian Ice<br>Freezes nearby hands every couple seconds</center></html>");
+       else if(info[4])
+           infoLabel.setText("<html><center>500 Coins<br>Water Food<br>Mid-Ranged tower that can only be placed on water, but can pop frozen hands.</center></html>");
+       else if(info[5])
+           infoLabel.setText("<html><center>3500 Coins<br>Super Lasagna<br>Shoots incredibly fast with very large range. Best tower in the game.</center></html>");
        else
            infoLabel.setText("");
        //updates the number of coins

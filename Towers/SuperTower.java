@@ -1,27 +1,30 @@
 package Towers;
 
-import Main.*;
+import Main.Bullet;
+import Main.Enemy;
+import Main.Gameboard;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
 /**
- * Created by evanphoward on 5/30/17.
+ * Created by evanphoward on 6/6/17.
  */
-public class SniperTower extends Tower {
+public class SuperTower extends Tower {
     private LinkedList<Bullet> bullets;
     private LinkedList<Enemy> enemies;
     private int cooldown;
 
-    public SniperTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet2.png"),1,15,30),new ImageIcon("Textures/Towers/Tower2.png"),x,y,120, Gameboard.IMAGEWIDTH);
+    public SuperTower(Gameboard g, int x,int y) {
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet5.png"),1,10,45),new ImageIcon("Textures/Towers/Tower5.png"),x,y,5,5* Gameboard.SQUARESIZE);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
 
     public void tick() {
-        for(Bullet b : bullets) {
+        for(int i=0;i<bullets.size();i++) {
+            Bullet b = bullets.get(i);
             b.tick();
             if(b.isGone())
                 bullets.remove(b);

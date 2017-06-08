@@ -18,8 +18,10 @@ public class BasicTower extends Tower {
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
+
     public void tick() {
-        for(Bullet b : bullets) {
+        for(int i=0;i<bullets.size();i++) {
+            Bullet b = bullets.get(i);
             b.tick();
             if(b.isGone())
                 bullets.remove(b);
