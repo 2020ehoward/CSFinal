@@ -10,6 +10,7 @@ import java.util.LinkedList;
  * Created by evanphoward on 5/30/17.
  */
 public class SniperTower extends Tower {
+   // Same fields and constructor as basic tower, changed stats (speed, range, texture, bullet, etc.)
     private LinkedList<Bullet> bullets;
     private LinkedList<Enemy> enemies;
     private int cooldown;
@@ -20,6 +21,7 @@ public class SniperTower extends Tower {
         this.cooldown=0;
     }
 
+    //same tick method as basic, just with a different range
     public void tick() {
         for(Bullet b : bullets) {
             b.tick();
@@ -40,11 +42,13 @@ public class SniperTower extends Tower {
             cooldown--;
     }
 
+    //clear all bullets on screen and reset cooldown
     public void endRound() {
         bullets.clear();
         cooldown=getSpeed();
     }
 
+    //update bullets and use the tower draw method
     public void draw(Graphics g) {
         super.setBullets(bullets);
         super.draw(g);

@@ -11,6 +11,11 @@ import java.util.LinkedList;
 /**
  * Created by evanphoward on 6/6/17.
  */
+/*
+See basic tower for comments, this tower is almost
+a duplicate besides its fields (speed, texture, bullet,
+etc.)
+ */
 public class SuperTower extends Tower {
     private LinkedList<Bullet> bullets;
     private LinkedList<Enemy> enemies;

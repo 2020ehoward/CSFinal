@@ -130,12 +130,16 @@ public class Gameboard extends JPanel
             }
     }
 
+    //updates round "schedule" by getting it from the round class
     public void nextRound() {
        round = Round.getRound(scoreboard.getRound()+1);
+       //if it has -2, it means the game is over and the player finished all rounds
        if(round.pollFirst()==-2)
            endGame();
        else {
+           //else it changes the initial delay in enemy spawning
            enemyInterval = round.pollFirst();
+           //the round starts with no enemies on the screen
            enemyCounter = 0;
        }
     }
@@ -201,7 +205,7 @@ public class Gameboard extends JPanel
                     for (int r = 0; r < WIDTH; r++)
                         for (int c = 0; c < WIDTH; c++)
                             //if where the mouse is intersects with the path or water, set the intersects boolean to true
-                            if (map[r][c] == 0 || map[r][c] == 4 || map[r][c] == 2 || map[r][c] == 3)
+                            if ((map[r][c] == 0 || map[r][c] == 4 || map[r][c] == 2 || map[r][c] == 3) || (i==4 && (map[r][c] == 0 || map[r][c] == 1 || map[r][c] == 2 || map[r][c] == 3)) )
                                 if (new Rectangle(x, y, SQUARESIZE, SQUARESIZE).intersects(new Rectangle(c * SQUARESIZE, r * SQUARESIZE, SQUARESIZE, SQUARESIZE)))
                                     intersects=true;
                     //go through every tower, and if the potential tower intersects with a current tower, set intersects to true
