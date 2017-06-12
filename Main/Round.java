@@ -5,8 +5,17 @@ import java.util.LinkedList;
 /**
  * Created by evanphoward on 6/2/17.
  */
+
+/*
+This class is used as a static method to get the order of enemies
+in a specified round and the delays between each enemy
+In the list a -1 followed by a number represents a change in the delay
+in the spawning of enemies
+Otherwise, a number represents spawning in a enemy of that level
+ */
 public class Round {
     private static LinkedList<Integer> round = new LinkedList<>();
+    //returns a "schedule" of a round, by the number of the round
     public static LinkedList<Integer> getRound(int roundNum) {
         round.clear();
         switch(roundNum) {
@@ -116,14 +125,19 @@ public class Round {
                 setDelay(30);
                 addEnemy(4,5);
                 break;
+            default:
+                round.add(-2);
         }
         return round;
     }
 
+    //adds a specified amount of enemies at a specified level
     private static void addEnemy(int level, int num) {
         for(int i=0;i<num;i++)
             round.add(level);
     }
+
+    //changes the delay to the specified number, in number of ticks
     private static void setDelay(int delay) {
         round.add(-1);
         round.add(delay);

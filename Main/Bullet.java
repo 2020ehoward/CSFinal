@@ -7,11 +7,14 @@ import java.awt.*;
  * Created by evanphoward on 5/20/17.
  */
 public class Bullet {
+    //isGone is true when it either hits an enemy or leaves the screen
     private boolean isGone;
+    //the parent gameboard object
     private Gameboard g;
     private ImageIcon myTexture;
     private int x,y,dx,dy,damage,speed;
 
+    //used to create an identical bullet at a new x and y value with no movement speed
     public Bullet(Bullet b,int x,int y) {
         this.speed = b.getSpeed();
         this.isGone = false;
@@ -24,6 +27,7 @@ public class Bullet {
         this.damage = b.getDamage();
     }
 
+    //used to create a new bullet, used as a texture for new bullets
     public Bullet(Gameboard g, ImageIcon myTexture, int damage, int speed,int size) {
         this.speed = speed;
         this.g = g;
@@ -31,6 +35,7 @@ public class Bullet {
         this.damage = damage;
     }
 
+    //next four getters used to copy the bullet, used when it is a template
     public ImageIcon getTexture() {
         return myTexture;
     }
@@ -47,6 +52,7 @@ public class Bullet {
         return speed;
     }
 
+    //checks if it has hit a enemy, if it has it is gone and it damages the enemy
     public void hasHit() {
         for(Enemy e : g.getEnemies()) {
             if(getBounds().intersects(e.getBounds()) && !isGone) {
@@ -56,18 +62,21 @@ public class Bullet {
         }
     }
 
+    //checks if it is outside of the gameboard, and then returns isGone
     public boolean isGone() {
         if(x<0 || x>Gameboard.IMAGEWIDTH || y<0 || y>Gameboard.IMAGEWIDTH)
             isGone = true;
         return isGone;
     }
 
+    //standard tick method, changes x and y and checks if it has hit an enemy
     public void tick() {
         x+=dx;
         y+=dy;
         hasHit();
     }
 
+    //setters for horizontal and vertical velocity
     public void setDx(int dx) {
         this.dx = dx;
     }
@@ -76,13 +85,20 @@ public class Bullet {
         this.dy = dy;
     }
 
+    //used to fire at a specified enemy at a specified distance with a certain range
     public void fireAt(Enemy e, int distance, int range) {
+        //creates a fake enemy
         Enemy fakeEnemy = new Enemy(e);
+        //figures out how many ticks it would take to reach the enemy
         int time = distance / speed;
+        //figures out where the enemy will be when the bullet reaches it
         for (int i = 0; i < time; i++)
             fakeEnemy.tick();
+        //the distance is now where the enemy will be
         distance = (int)(Math.sqrt(Math.pow(fakeEnemy.getX()-x,2)+Math.pow(fakeEnemy.getY()-y,2)));
+        //if the updated position is still within range
         if(distance<range) {
+            //uses a formula to set velocity to hit the enemy at the specified place and time
             float dx, dy;
             dx = fakeEnemy.getX() - x;
             dy = fakeEnemy.getY() - y;
@@ -92,14 +108,17 @@ public class Bullet {
             this.dx = (int) (dx * speed);
             this.dy = (int) (dy * speed);
         }
+        //if it can't reach the enemy, it is deleted
         else
             isGone=true;
     }
 
+    //used to check if the bullet is intersecting something
     public Rectangle getBounds() {
         return new Rectangle(x,y,myTexture.getIconWidth(),myTexture.getIconHeight());
     }
 
+    //standard draw method
     public void draw(Graphics g) {
         g.drawImage(myTexture.getImage(),x,y,null);
     }

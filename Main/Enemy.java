@@ -13,11 +13,12 @@ public class Enemy {
     public static final int SOUTH = 2;
     public static final int WEST = 3;
 
-    //booleans to keep track if it is dead, escaped the map, or on the final square (escaping)
+    //booleans to keep track if it is dead, escaped the map, on the final square (escaping), or if it has been frozen by the freeze tower
     private boolean isDead,isEscaped,isEscaping,isFrozen;
     //x and y are the location
     //direction is which way it is currently moving
     //speed is how many pixels it moves every tick
+    //freezetimer keeps track of how much time left it stays frozen
 private int x,y,direction,speed,level,freezetimer;
 //the texture it uses
 private ImageIcon texture;
@@ -95,22 +96,28 @@ private ImageIcon texture;
         }
 
 
-        //level,speed, and texture are all specified by the constructor
+        //level is specified by the constructor
         this.level = level;
+        //speed is dependant on level, set using method
         setSpeed();
         //it starts out alive
         isDead = false;
+        //it starts out not frozen
         freezetimer = 0;
     }
 
     public void freeze(int length) {
+        //if it is not already frozen
         if(freezetimer==0) {
+            //it becomes frozen for the specified amount of time
             isFrozen=true;
             freezetimer = length;
         }
     }
 
+    //used to set the speed of an enemy based on their level
     public void setSpeed() {
+        //each level has a corresponding speed
         switch(level) {
             case 1: speed=5;
                 break;
@@ -123,8 +130,11 @@ private ImageIcon texture;
         }
     }
 
+    //used to set the texture of an enemy based on their level
     public void setTexture() {
+        //textures follow the naming convention of enemy"level".png
         texture=new ImageIcon("Textures/Enemies/enemy"+level+".png");
+        //each level will be a different size
         switch(level) {
             case 1: this.texture = new ImageIcon(texture.getImage().getScaledInstance((int)(Gameboard.SQUARESIZE*0.8),(int)(Gameboard.SQUARESIZE*0.8),Image.SCALE_SMOOTH));
                 break;
@@ -140,6 +150,7 @@ private ImageIcon texture;
     //method that runs every tick of the game
     public void tick() {
 
+        //texture and speed will be updated in case the level has changed (if it has been damaged)
         setTexture();
         setSpeed();
 
@@ -154,15 +165,15 @@ private ImageIcon texture;
                 //it is in the process of escaping
                 isEscaping = true;
 
+        //if it is not being frozen anymore
         if (freezetimer == 0) {
+            //it is not frozen anymore
             isFrozen=false;
             //if it isn't in the exit square
             if (!isEscaping)
-                //switch the direction it is going
+                //each direction checks if the next square is not path, it will check the neighboring squares and whichever one is path will go in that direction
                 switch (direction) {
-                    //if it is going north
                     case 0:
-                        //if the current s
                         if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 1)
                             if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
                                 direction = EAST;
@@ -195,6 +206,8 @@ private ImageIcon texture;
                         x -= speed;
                         break;
                 }
+                //if it is escaping, it just keeps moving in that direction
+            //this is so it doesn't check a square outside of the map
             else
                 switch (direction) {
                     case 0:
@@ -216,6 +229,7 @@ private ImageIcon texture;
         }
     }
 
+    //getters used to create a copy for the bullet class
     public int getX() {
         return x;
     }
@@ -236,15 +250,19 @@ private ImageIcon texture;
         return speed;
     }
 
+    public ImageIcon getTexture() {
+        return texture;
+    }
+
+    public int getFreezetimer() { return freezetimer; }
+
+    //removes a specified amount of damage
+    //if the level is below 1, it is dead
     public void removeHealth(int damage) {
         if(level-damage<1)
             isDead=true;
         else
         this.level-=damage;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
     }
 
     public boolean isDead() {
@@ -259,18 +277,12 @@ private ImageIcon texture;
         return isEscaping;
     }
 
+    //used to check if it is intersecting a bullet
     public Rectangle getBounds() {
         return new Rectangle(x,y,texture.getIconWidth(),texture.getIconHeight());
     }
 
-    public ImageIcon getTexture() {
-        return texture;
-    }
-
-    public int getFreezetimer() { return freezetimer; }
-
-    public boolean isFrozen() { return isFrozen; }
-
+    //standard draw method
     public void draw(Graphics g) {
         g.drawImage(texture.getImage(),x,y,null);
     }

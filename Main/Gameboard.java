@@ -44,9 +44,9 @@ public class Gameboard extends JPanel
     public static final int SQUARESIZE = IMAGEWIDTH/WIDTH;
 
     //This is true if it is currently a round, false if it is before the game or between rounds
-    private boolean isRound;
-    //the enemy counters are used to spawn the enemies, the bigger it is the more it spawns
-    //tower x and y are the location of the "fake" tower when you are placing on in before buying it
+    private boolean isRound,gameOver;
+    //the enemy counters are used to spawn the enemies, enemyInterval is how many ticks between spawns
+    //tower x and y are the location of the "fake" tower when you are placing it in before buying it
     //numEnemies is the total number of enemies on the board
     private int enemyCounter,enemyInterval,towerX,towerY,numEnemies;
 
@@ -71,7 +71,7 @@ public class Gameboard extends JPanel
        this.towerboard = towerboard;
        this.scoreboard = scoreboard;
        //the game starts not in a round
-       isRound=false;
+       isRound=gameOver=false;
        //there are no enemies or towers on the screen it starts, so the counters are 0 and the lists are empty
        enemyInterval=enemyCounter=numEnemies=0;
        towers = new LinkedList<>();
@@ -132,26 +132,35 @@ public class Gameboard extends JPanel
 
     public void nextRound() {
        round = Round.getRound(scoreboard.getRound()+1);
-       round.removeFirst();
-       enemyInterval=round.pollFirst();
-        enemyCounter=0;
+       if(round.pollFirst()==-2)
+           endGame();
+       else {
+           enemyInterval = round.pollFirst();
+           enemyCounter = 0;
+       }
     }
 
+    //ends the game
+    public void endGame() {
+       gameOver=true;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    //adds an enemy with the specified level to the game
     public void spawnEnemy(int level) {
-       //adds an enemy with the traits of a basic enemy to the list, spawning into the game
-        //it has 1 healt, a speed of 5, and the basic enemy texture scaled to 8/10 of a square
        enemies.add(new Enemy(this,level));
     }
 
+    //methods to spawn in towers, adding them to the linked list
+    //used because the gameboard (this) is not accesible in the mouselistener
     public  void spawnBasicTower(int x,int y) {
-       //spawns in a basic tower, adding it to the list
-        //it has to corresponding basic bullet, with a damage of 1 and speed of 10, the basic tower texture, the x and y values specified by wherever this method is called, a speed(delay between shots) of 50, and a range of 3 squares
-        towers.add(new BasicTower(this,x,y));
+       towers.add(new BasicTower(this,x,y));
     }
 
     public void spawnCircleTower(int x,int y) {
-       //spawns in a circle tower
-        //corresponding bullet, texture, x and y, delay between shots of 50, and a range of 1.2 squares
         towers.add(new CircleTower(this,x,y));
     }
 
@@ -162,10 +171,6 @@ public class Gameboard extends JPanel
     public void spawnSniperTower(int x,int y) {
        towers.add(new SniperTower(this,x,y));
     }
-
-   // public void spawnBoatTower(int x,int y)  {
-     // towers.add(new BoatTower(this,x,y));
-      //}
     
     public void spawnSuperTower(int x,int y) {
       towers.add(new SuperTower(this,x,y)); 
@@ -261,9 +266,8 @@ public class Gameboard extends JPanel
 
     //used to map the mouse coordinates onto the buffered image coordinates
     public int map(int in, int in_min,int in_max) {
-       //maps a given value from one range to another
-        //Ex: map(1,0,2,0,4) returns 2 since it is in the middle of 0 and 4
-        return (in - in_min) * (800) / (in_max - in_min);
+       //maps a given value from the size of the frame to the size of the buffered image
+        return (in - in_min) * (IMAGEWIDTH) / (in_max - in_min);
     }
 
     //runs every few milliseconds to update everything that has changed
@@ -283,9 +287,12 @@ public class Gameboard extends JPanel
                isRound = true;
            }
 
+           //if a certain interval has passed, and there are still enemies to spawn
+           //spawn an enemy with a level gotten from the round schedule
            if (enemyCounter % enemyInterval == 0 && !round.isEmpty()) {
                spawnEnemy(round.pollFirst());
                numEnemies++;
+               //if the next item is -1, set the delay in enemy spawning to the number following the -1
                if(!round.isEmpty() && !(round.size()==1))
                if(round.getFirst()==-1) {
                    round.removeFirst();
@@ -310,12 +317,11 @@ public class Gameboard extends JPanel
            }
 
            //if there are no enemies left and it is in a round
+           //it means the round is over, so calls all methods to end a round
+           //and gives the player a certain number of coins
            if (numEnemies==0 && isRound && round.isEmpty()) {
-               //ends the round
                isRound = false;
-               //pauses the game
                scoreboard.pause();
-               //goes through all the towers and tells them the round is over
                for (Tower t : towers)
                    t.endRound();
                towerboard.setCoin(towerboard.getCoin()+100+scoreboard.getRound());
@@ -331,6 +337,7 @@ public class Gameboard extends JPanel
                t.tick();
            }
 
+           //if there are still enemies left to spawn in the round "schedule", increase the counter used for spawning enemies
            if(!round.isEmpty())
                enemyCounter++;
        }
@@ -345,14 +352,14 @@ public class Gameboard extends JPanel
             t.draw(myBuffer);
         }
 
-        //draws the "fake" tower when the player is spawning on in
+        //draws the "fake" tower when the player is spawning it in
         for (int i = 0; i < 6; i++) {
            //checks if the player is spawning a tower in
             if (towerboard.getSpawn(i)) {
-                //sets the color of the buffer to the color of the range circle, making it slightly transparent
+                //sets the color of the buffer to the color of the range circle, making it slightly translucent
                 Color rangeCircle = Color.GRAY;
                 myBuffer.setColor(new Color(rangeCircle.getRed(), rangeCircle.getGreen(), rangeCircle.getBlue(), 150));
-                //draws the texture of the corresponding tower and the a circle showing the range of that tower
+                //draws the texture of the corresponding tower and a circle showing the range of that tower
                 switch (i) {
                     case 0:
                         myBuffer.fillOval((towerX + SQUARESIZE / 2) - 3 * SQUARESIZE, (towerY + SQUARESIZE / 2) - 3 * SQUARESIZE, 6 * SQUARESIZE, 6 * SQUARESIZE);

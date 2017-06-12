@@ -13,7 +13,7 @@ public class MainPanel extends JPanel
    private Towerboard towerboard;
    private javax.swing.Timer t;
 
-   //this requires the parent jframe as an arguement to be passed to the gameboard
+   //this requires the parent jframe as an argument to be passed to the gameboard
    public MainPanel(JFrame parentFrame)
    {
        //Main panel uses a border layout
@@ -39,10 +39,17 @@ public class MainPanel extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {
-          //everytime the game ticks, it runs the corresponding update methods in each of the subpanels
+          //every time the game ticks, it runs the corresponding update methods in each of the subpanels
           gameboard.update();
           towerboard.update();
           scoreboard.update();
+
+          //if the player reaches the end of the rounds, tell the scoreboard the game is over
+          if(gameboard.isGameOver())
+              scoreboard.endGame();
+          //if the player runs out of life, tell the gameboard the game is over
+          else if(scoreboard.isGameOver())
+              gameboard.endGame();
       }
    }
    public void setSpeed(int x) {
