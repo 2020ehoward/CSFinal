@@ -16,12 +16,12 @@ public class SniperTower extends Tower {
     private int cooldown;
 
     public SniperTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet2.png"),1,75,30),new ImageIcon("Textures/Towers/Tower2.png"),x,y,80, Gameboard.IMAGEWIDTH);
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet2.png"),1,75,30,false),new ImageIcon("Textures/Towers/Tower2.png"),x,y,80, Gameboard.IMAGEWIDTH);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }
 
-    //same tick method as map1, just with a different range
+    //same tick method as basic tower, just with a different range
     public void tick() {
         for(Bullet b : bullets) {
             b.tick();

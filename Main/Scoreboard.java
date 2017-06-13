@@ -195,7 +195,7 @@ public class Scoreboard extends JPanel
         lifeLabel.setText("        Life Remaining: "+life);
         roundLabel.setText("Round: "+round+"    ");
 
-        //if the player runs out of life, end the game
+        //if the player runs out of life, end the game and reset life to 0 so it doesn't display negative numbers
         if(life<=0) {
             life=0;
             endGame(false);

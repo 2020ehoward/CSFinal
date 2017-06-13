@@ -18,7 +18,7 @@ public class BasicTower extends Tower {
     //makes a new map1 tower with a parent gameboard at the specified x and y
     public BasicTower(Gameboard g, int x, int y) {
         //sends the corresponding fields (damage, speed of bullet, speed of tower, range, etc.) to the super constructor
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10,45),new ImageIcon("Textures/Towers/Tower0.png"),x,y,33,3* Gameboard.SQUARESIZE);
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10,45,false),new ImageIcon("Textures/Towers/Tower0.png"),x,y,33,3* Gameboard.SQUARESIZE);
         //bullets is an empty linked list and cooldown starts at 0 so it fires as soon as it can
         this.bullets = new LinkedList<>();
         this.cooldown=0;

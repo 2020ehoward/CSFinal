@@ -22,7 +22,7 @@ public class SuperTower extends Tower {
     private int cooldown;
 
     public SuperTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet5.png"),1,15,45),new ImageIcon("Textures/Towers/Tower5.png"),x,y,5,5* Gameboard.SQUARESIZE);
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet5.png"),1,12,45,false),new ImageIcon("Textures/Towers/Tower5.png"),x,y,15,5* Gameboard.SQUARESIZE);
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }

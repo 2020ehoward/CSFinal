@@ -11,13 +11,17 @@ import java.util.LinkedList;
 /**
  * Created by evanphoward on 6/12/17.
  */
+/*
+also identical to basic tower (besides stats), except it does not check if the
+enemy is frozen, as it can attack frozen enemies
+ */
 public class WaterTower extends Tower {
     private LinkedList<Bullet> bullets;
     private LinkedList<Enemy> enemies;
     private int cooldown;
 
     public WaterTower(Gameboard g, int x, int y) {
-        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet4.png"),2,15,50),new ImageIcon("Textures/Towers/Tower4.png"),x,y,30,(int)(2.5* Gameboard.SQUARESIZE));
+        super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet4.png"),2,15,50,true),new ImageIcon("Textures/Towers/Tower4.png"),x,y,30,(int)(2.5* Gameboard.SQUARESIZE));
         this.bullets = new LinkedList<>();
         this.cooldown=0;
     }

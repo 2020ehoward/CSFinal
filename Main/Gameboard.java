@@ -68,9 +68,10 @@ public class Gameboard extends JPanel
        enemies = new LinkedList<>();
        round = new LinkedList<>();
 
+       //asks the user to select a map, disregarding input that is invalid
        int mapSelection;
        while(true) {
-           String input = JOptionPane.showInputDialog(this,"Please Select Map. Options are 1, 2, 3, and 4.");
+           String input = JOptionPane.showInputDialog(this,"Please Select Map. Options are 1, 2, 3, and 4. Enter -1 to quit game.");
            try {
                mapSelection = Integer.parseInt(input);
                if(mapSelection==-1)
@@ -102,17 +103,21 @@ public class Gameboard extends JPanel
     //it is a boolean that returns false if the user inputs an invalid map choice
    private boolean setMap(int mapNum) {
        try {
+           //creates a scanner for the file with the chosen map in it
            Scanner infile = new Scanner(new File("Maps/map" + mapNum));
+           //reads in the size of the map, specifies the fields from that
            WIDTH = infile.nextInt();
            infile.nextLine();
            SQUARESIZE=IMAGEWIDTH/WIDTH;
            map = new int[WIDTH][WIDTH];
+           //goes through every line of the file, breaking it up into columns and placing it in the map 2d int array
            for(int r=0;r<WIDTH;r++) {
                String[] tempRow = infile.nextLine().split(",");
                for (int c = 0; c < WIDTH; c++) {
                     map[r][c] = Integer.parseInt(tempRow[c]);
                }
            }
+           //if they put in a number that is not a map, it asks them for another map again by returning false
        } catch (FileNotFoundException e) {
            System.out.println("Invalid Map Choice");
            return false;

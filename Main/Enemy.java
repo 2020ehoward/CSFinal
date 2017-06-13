@@ -76,7 +76,7 @@ private ImageIcon texture;
         //if it is on the right
         else if(x>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             //put it off the screen
-            x+=Gameboard.SQUARESIZE-1;
+            x+=Gameboard.SQUARESIZE-(int)(Gameboard.SQUARESIZE/4);
             //vary the y-value across the entrance
             y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-(int)((Gameboard.SQUARESIZE-texture.getIconHeight())*0.8)));
         }
@@ -88,7 +88,7 @@ private ImageIcon texture;
             x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-(int)((Gameboard.SQUARESIZE-texture.getIconHeight())*0.8)));
         }
         //bottom of the screen
-        else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
+        else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE-10) {
             //off the screen
             y+=Gameboard.SQUARESIZE-1;
             //random x-value
