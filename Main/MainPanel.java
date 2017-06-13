@@ -3,6 +3,7 @@ package Main;//Evan Howard, 11 May 2017
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.InputMismatchException;
 
 public class MainPanel extends JPanel
 {
@@ -46,7 +47,7 @@ public class MainPanel extends JPanel
 
           //if the player reaches the end of the rounds, tell the scoreboard the game is over
           if(gameboard.isGameOver())
-              scoreboard.endGame();
+              scoreboard.endGame(true);
           //if the player runs out of life, tell the gameboard the game is over
           else if(scoreboard.isGameOver())
               gameboard.endGame();

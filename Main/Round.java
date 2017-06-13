@@ -112,7 +112,7 @@ public class Round {
                 addEnemy(1,20);
                 break;
             case 15:
-                setDelay(12);
+                setDelay(15);
                 addEnemy(4,20);
                 break;
             case 16:
@@ -124,6 +124,74 @@ public class Round {
                 addEnemy(2,10);
                 setDelay(30);
                 addEnemy(4,5);
+                break;
+            case 17:
+                setDelay(5);
+                addEnemy(1,200);
+                break;
+            case 18:
+                setDelay(20);
+                addEnemy(4,10);
+                addEnemy(3,20);
+                addEnemy(4,10);
+                addEnemy(3,20);
+                setDelay(2);
+                addEnemy(2,30);
+                break;
+            case 19:
+                setDelay(30);
+                addEnemy(4,50);
+                setDelay(12);
+                addEnemy(3,10);
+                addEnemy(2,50);
+                break;
+            case 20:
+                setDelay(20);
+                for(int i=0;i<30;i++) {
+                    addEnemy(1, 1);
+                    addEnemy(2,1);
+                    addEnemy(3,1);
+                    addEnemy(4,1);
+                }
+                break;
+            case 21:
+                setDelay(15);
+                for(int i=0;i<30;i++) {
+                    addEnemy(4,1);
+                    addEnemy(3,1);
+                    addEnemy(2,1);
+                    addEnemy(1,1);
+                }
+                break;
+            case 22:
+                setDelay(5);
+                addEnemy(3,10);
+                setDelay(10);
+                addEnemy(4,5);
+                setDelay(8);
+                addEnemy(2,15);
+                setDelay(20);
+                addEnemy(4,30);
+                break;
+            case 23:
+                setDelay(18);
+                addEnemy(4,50);
+                break;
+            case 24:
+                setDelay(20);
+                addEnemy(4,10);
+                addEnemy(3,10);
+                addEnemy(2,10);
+                addEnemy(1,10);
+                setDelay(12);
+                addEnemy(4,10);
+                addEnemy(3,20);
+                addEnemy(2,30);
+                addEnemy(1,40);
+                break;
+            case 25:
+                setDelay(12);
+                addEnemy(4,75);
                 break;
             default:
                 round.add(-2);

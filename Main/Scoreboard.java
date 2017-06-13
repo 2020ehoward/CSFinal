@@ -105,7 +105,9 @@ public class Scoreboard extends JPanel
     }
 
     //used to end the game, all buttons are disabled and the game is paused
-    public void endGame() {
+    public void endGame(boolean playerWins) {
+       if(!playerWins && !isGameOver)
+           JOptionPane.showMessageDialog(getParent(),"Game Over!");
        isGameOver=true;
        pause();
        pause.setEnabled(false);
@@ -194,8 +196,10 @@ public class Scoreboard extends JPanel
         roundLabel.setText("Round: "+round+"    ");
 
         //if the player runs out of life, end the game
-        if(life<=0)
-            endGame();
+        if(life<=0) {
+            life=0;
+            endGame(false);
+        }
    }
    
 }

@@ -8,7 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Gameboard extends JPanel
 {
@@ -19,29 +22,16 @@ public class Gameboard extends JPanel
     2 = Entrance (Dirt Texture)
     3 = Exit (Dirt Texture)
     4 = Water
+    Maps found in the maps folder and specified in mainpanel/setmap method
      */
-    public static final int[][] map = {
-            {1,1,1,1,1,1,1,3,1,1,1,1,1},
-            {1,1,0,0,0,0,0,0,1,1,1,4,1},
-            {1,1,0,1,1,1,1,1,1,4,4,4,1},
-            {1,1,0,1,1,1,1,1,1,1,4,4,1},
-            {1,1,0,1,1,1,1,1,1,1,4,4,4},
-            {1,1,0,1,0,0,0,0,0,1,1,1,1},
-            {1,1,0,0,0,1,1,1,0,1,1,1,1},
-            {1,1,1,1,1,1,1,1,0,0,0,0,1},
-            {2,0,0,0,0,1,1,1,1,1,1,0,1},
-            {1,1,1,1,0,1,1,4,4,1,1,0,1},
-            {1,1,1,1,0,1,1,1,1,1,1,0,1},
-            {1,1,1,1,0,0,0,0,0,0,0,0,1},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1}
-    };
+    public static  int[][] map;
 
     //WIDTH is the number of squares/tiles on the map
-    private static final int WIDTH = map.length;
+    private static int WIDTH;
     //IMAGEWIDTH is the width in pixels of the buffered image the gameboard uses
     public static final int IMAGEWIDTH = 780;
     //SQUARESIZE is the size of each square
-    public static final int SQUARESIZE = IMAGEWIDTH/WIDTH;
+    public static int SQUARESIZE;
 
     //This is true if it is currently a round, false if it is before the game or between rounds
     private boolean isRound,gameOver;
@@ -78,6 +68,20 @@ public class Gameboard extends JPanel
        enemies = new LinkedList<>();
        round = new LinkedList<>();
 
+       int mapSelection;
+       while(true) {
+           String input = JOptionPane.showInputDialog(this,"Please Select Map. Options are 1, 2, 3, and 4.");
+           try {
+               mapSelection = Integer.parseInt(input);
+               if(mapSelection==-1)
+                   System.exit(0);
+               else if(setMap(mapSelection))
+               break;
+           } catch(NumberFormatException e) {
+               System.out.println("Please input a number.");
+           }
+       }
+
        //sets the graphics object to the graphics of the buffered image
        myBuffer = myImage.getGraphics();
 
@@ -92,6 +96,28 @@ public class Gameboard extends JPanel
 
        //calls the drawmap method, drawing all the textures in their corresponding places
        drawMap();
+   }
+
+   //this method changes the map, from a user input
+    //it is a boolean that returns false if the user inputs an invalid map choice
+   private boolean setMap(int mapNum) {
+       try {
+           Scanner infile = new Scanner(new File("Maps/map" + mapNum));
+           WIDTH = infile.nextInt();
+           infile.nextLine();
+           SQUARESIZE=IMAGEWIDTH/WIDTH;
+           map = new int[WIDTH][WIDTH];
+           for(int r=0;r<WIDTH;r++) {
+               String[] tempRow = infile.nextLine().split(",");
+               for (int c = 0; c < WIDTH; c++) {
+                    map[r][c] = Integer.parseInt(tempRow[c]);
+               }
+           }
+       } catch (FileNotFoundException e) {
+           System.out.println("Invalid Map Choice");
+           return false;
+       }
+       return true;
    }
 
    //paints the contents of the buffered image
@@ -146,6 +172,8 @@ public class Gameboard extends JPanel
 
     //ends the game
     public void endGame() {
+       if(!scoreboard.isGameOver() && !gameOver)
+       JOptionPane.showMessageDialog(getParent(),"You Win! Congratulations for surviving all 25 rounds!");
        gameOver=true;
     }
 
@@ -180,6 +208,8 @@ public class Gameboard extends JPanel
       towers.add(new SuperTower(this,x,y)); 
     }
 
+    public void spawnWaterTower(int x,int y) { towers.add(new WaterTower(this,x,y)); }
+
     //returns the list of enemies, used by towers and bullets to know where to shoot
     public LinkedList<Enemy> getEnemies() {
         return enemies;
@@ -205,7 +235,7 @@ public class Gameboard extends JPanel
                     for (int r = 0; r < WIDTH; r++)
                         for (int c = 0; c < WIDTH; c++)
                             //if where the mouse is intersects with the path or water, set the intersects boolean to true
-                            if ((map[r][c] == 0 || map[r][c] == 4 || map[r][c] == 2 || map[r][c] == 3) || (i==4 && (map[r][c] == 0 || map[r][c] == 1 || map[r][c] == 2 || map[r][c] == 3)) )
+                            if (((map[r][c] == 0 || map[r][c] == 4 || map[r][c] == 2 || map[r][c] == 3) && i!=4) || (i==4 && (map[r][c] == 0 || map[r][c] == 1 || map[r][c] == 2 || map[r][c] == 3)) )
                                 if (new Rectangle(x, y, SQUARESIZE, SQUARESIZE).intersects(new Rectangle(c * SQUARESIZE, r * SQUARESIZE, SQUARESIZE, SQUARESIZE)))
                                     intersects=true;
                     //go through every tower, and if the potential tower intersects with a current tower, set intersects to true
@@ -239,8 +269,13 @@ public class Gameboard extends JPanel
                                             spawnFreezeTower(x,y);
                                             towerboard.setSpawn(3);
                                             break;
+                                        case 4:
+                                            towerboard.setCoin(towerboard.getCoin()-500);
+                                            spawnWaterTower(x,y);
+                                            towerboard.setSpawn(4);
+                                            break;
                                         case 5:
-                                            towerboard.setCoin(towerboard.getCoin()-3500);
+                                            towerboard.setCoin(towerboard.getCoin()-1500);
                                             spawnSuperTower(x,y);
                                             towerboard.setSpawn(5);
                                             break;
@@ -380,6 +415,11 @@ public class Gameboard extends JPanel
                         myBuffer.fillOval((towerX + SQUARESIZE / 2) - 2*SQUARESIZE, (towerY + SQUARESIZE / 2) - 2 *SQUARESIZE, 4 * SQUARESIZE, 4 * SQUARESIZE);
                         myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower3.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
                     break;
+                    case 4:
+                        myBuffer.fillOval((towerX + SQUARESIZE / 2) - (int)(2.5 * SQUARESIZE), (towerY + SQUARESIZE / 2) - (int)(2.5 * SQUARESIZE), 5 * SQUARESIZE, 5 * SQUARESIZE);
+                        myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower4.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);
+                        break;
+
                     case 5:
                         myBuffer.fillOval((towerX + SQUARESIZE / 2) - 5*SQUARESIZE, (towerY + SQUARESIZE / 2) - 5 * SQUARESIZE, 10 * SQUARESIZE, 10 * SQUARESIZE);
                         myBuffer.drawImage(new ImageIcon(new ImageIcon("Textures/Towers/Tower5.png").getImage().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH)).getImage(), towerX, towerY, null);

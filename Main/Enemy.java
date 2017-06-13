@@ -78,21 +78,21 @@ private ImageIcon texture;
             //put it off the screen
             x+=Gameboard.SQUARESIZE-1;
             //vary the y-value across the entrance
-            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()));
+            y+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-(int)((Gameboard.SQUARESIZE-texture.getIconHeight())*0.8)));
         }
         //if it is on the top
         else if(y<=30) {
             //off the screen
             y-=texture.getIconHeight()-1;
             //random x-value
-            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
+            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-(int)((Gameboard.SQUARESIZE-texture.getIconHeight())*0.8)));
         }
         //bottom of the screen
         else if(y>=Gameboard.IMAGEWIDTH-Gameboard.SQUARESIZE) {
             //off the screen
             y+=Gameboard.SQUARESIZE-1;
             //random x-value
-            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconWidth()));
+            x+=(int)(Math.random()*(Gameboard.SQUARESIZE-texture.getIconHeight()-(int)((Gameboard.SQUARESIZE-texture.getIconHeight())*0.8)));
         }
 
 
@@ -174,7 +174,7 @@ private ImageIcon texture;
                 //each direction checks if the next square is not path, it will check the neighboring squares and whichever one is path will go in that direction
                 switch (direction) {
                     case 0:
-                        if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 1)
+                        if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 1 || Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1][x / Gameboard.SQUARESIZE] == 4)
                             if (Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[(y + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
                                 direction = EAST;
                             else
@@ -182,7 +182,7 @@ private ImageIcon texture;
                         y -= speed;
                         break;
                     case 1:
-                        if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 1)
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 1 || Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 4)
                             if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 3)
                                 direction = SOUTH;
                             else
@@ -190,7 +190,7 @@ private ImageIcon texture;
                         x += speed;
                         break;
                     case 2:
-                        if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 1)
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 1 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][x / Gameboard.SQUARESIZE] == 4)
                             if (Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE][x / Gameboard.SQUARESIZE + 1] == 3)
                                 direction = EAST;
                             else
@@ -198,7 +198,7 @@ private ImageIcon texture;
                         y += speed;
                         break;
                     case 3:
-                        if (Gameboard.map[y / Gameboard.SQUARESIZE][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1] == 1)
+                        if (Gameboard.map[y / Gameboard.SQUARESIZE][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1] == 1 || Gameboard.map[y / Gameboard.SQUARESIZE][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE - 1] == 4)
                             if (Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE] == 0 || Gameboard.map[y / Gameboard.SQUARESIZE + 1][(x + (int)(Gameboard.SQUARESIZE*(2.0/3.0))) / Gameboard.SQUARESIZE] == 3)
                                 direction = SOUTH;
                             else
@@ -276,6 +276,8 @@ private ImageIcon texture;
     public boolean isEscaping() {
         return isEscaping;
     }
+
+    public boolean isFrozen() { return isFrozen; }
 
     //used to check if it is intersecting a bullet
     public Rectangle getBounds() {

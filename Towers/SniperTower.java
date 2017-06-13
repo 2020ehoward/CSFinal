@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * Created by evanphoward on 5/30/17.
  */
 public class SniperTower extends Tower {
-   // Same fields and constructor as basic tower, changed stats (speed, range, texture, bullet, etc.)
+   // Same fields and constructor as map1 tower, changed stats (speed, range, texture, bullet, etc.)
     private LinkedList<Bullet> bullets;
     private LinkedList<Enemy> enemies;
     private int cooldown;
@@ -21,7 +21,7 @@ public class SniperTower extends Tower {
         this.cooldown=0;
     }
 
-    //same tick method as basic, just with a different range
+    //same tick method as map1, just with a different range
     public void tick() {
         for(Bullet b : bullets) {
             b.tick();
@@ -30,9 +30,10 @@ public class SniperTower extends Tower {
         }
         enemies = getParentBoard().getEnemies();
         if(cooldown==0) {
-            if(getClosestEnemy(enemies)!=-1) {
+            int closestEnemy = getClosestEnemy(enemies);
+            if(getClosestEnemy(enemies)!=-1 && !enemies.get(closestEnemy).isFrozen()) {
                 bullets.add(new Bullet(getMyBullet(),(getX())+(getMyTexture().getIconWidth()/4),(getY())+(getMyTexture().getIconHeight()/4)));
-                bullets.getLast().fireAt(enemies.get(getClosestEnemy(enemies)),getDistance(),getRange());
+                bullets.getLast().fireAt(enemies.get(closestEnemy),getDistance(),getRange());
                 if(bullets.getLast().isGone())
                     bullets.removeLast();
                 cooldown = getSpeed();

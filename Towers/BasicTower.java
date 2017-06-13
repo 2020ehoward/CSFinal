@@ -15,7 +15,7 @@ public class BasicTower extends Tower {
     //ticks left until it shoots
     private int cooldown;
 
-    //makes a new basic tower with a parent gameboard at the specified x and y
+    //makes a new map1 tower with a parent gameboard at the specified x and y
     public BasicTower(Gameboard g, int x, int y) {
         //sends the corresponding fields (damage, speed of bullet, speed of tower, range, etc.) to the super constructor
         super(g,new Bullet(g,new ImageIcon("Textures/Bullets/Bullet0.png"),1,10,45),new ImageIcon("Textures/Towers/Tower0.png"),x,y,33,3* Gameboard.SQUARESIZE);
@@ -37,7 +37,8 @@ public class BasicTower extends Tower {
         //if it is allowed to shoot
         if(cooldown==0) {
             //if an enemy is in range
-            if(getClosestEnemy(enemies)!=-1) {
+            int closestEnemy = getClosestEnemy(enemies);
+            if(closestEnemy!=-1 && !enemies.get(closestEnemy).isFrozen()) {
                 //add a new bullet at the center of the tower and fire it at the closest enemy, with the distance of the enemy and the range of the tower specified
                 bullets.add(new Bullet(getMyBullet(),(getX())+(getMyTexture().getIconWidth()/4),(getY())+(getMyTexture().getIconHeight()/4)));
                 bullets.getLast().fireAt(enemies.get(getClosestEnemy(enemies)),getDistance(),getRange());
